@@ -2,12 +2,12 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.MainGUI">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="600" height="600"/>
+      <xy x="20" y="20" width="800" height="600"/>
     </constraints>
     <properties>
-      <maximumSize width="600" height="500"/>
-      <minimumSize width="600" height="500"/>
-      <preferredSize width="600" height="500"/>
+      <maximumSize width="800" height="500"/>
+      <minimumSize width="800" height="500"/>
+      <preferredSize width="800" height="500"/>
     </properties>
     <border type="etched" title="COMPANION"/>
     <children>
@@ -39,6 +39,21 @@
                 <constraints/>
                 <properties>
                   <text value="Events"/>
+                </properties>
+              </component>
+              <hspacer id="1dde">
+                <constraints/>
+              </hspacer>
+              <component id="fde9c" class="javax.swing.JButton" binding="achievementsButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Achievements"/>
+                </properties>
+              </component>
+              <component id="1169e" class="javax.swing.JButton" binding="shopButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Shop"/>
                 </properties>
               </component>
             </children>

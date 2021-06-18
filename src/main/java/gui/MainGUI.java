@@ -1,8 +1,9 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-public class MainGUI {
+public class MainGUI extends JFrame {
 
     private JPanel mainPanel;
     private JPanel tablesPanel;
@@ -11,6 +12,8 @@ public class MainGUI {
     private JButton guildsButton;
     private JButton membersButton;
     private JButton eventsButton;
+    private JButton achievementsButton;
+    private JButton shopButton;
 
     private JPanel centerTablePanel;
     private JTable mainTable;
@@ -34,4 +37,22 @@ public class MainGUI {
 
     private JPanel southTablePanel;
     private JTextArea logTextArea;
+
+    public MainGUI() {
+        setContentPane(mainPanel);
+        pack();
+        setLocationRelativeTo(null);
+        setTitle("Companion");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+        loadTestTableData();
+    }
+
+    private void loadTestTableData() {
+
+        String[] columnNames = {"Nick", "Level", "Location", "Day Message"};
+        mainTable.setModel(new DefaultTableModel(null, columnNames));
+
+    }
+
 }
