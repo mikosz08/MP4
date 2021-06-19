@@ -8,10 +8,16 @@ public class Leader implements Serializable {
 
     private String leaderName;
 
+    /**
+     * Leader Constructor
+     */
     public Leader(String leaderName) {
         setLeaderName(leaderName);
     }
 
+    /**
+     * Leader Name
+     */
     public String getLeaderName() {
         return leaderName;
     }

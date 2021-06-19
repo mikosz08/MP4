@@ -57,15 +57,13 @@ public class PlayerLocation implements Serializable {
     }
 
     /**
-     * toString.
+     * Utilities.
      */
     @Override
     public String toString() {
         return String.format("%s at: x:%d | y:%d", getLocationName(), getCoordinates().x, getCoordinates().y);
     }
-    /**
-     * Equals and HashCode.
-     */
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,6 +72,7 @@ public class PlayerLocation implements Serializable {
         return locationName.equals(otherLoc.locationName) &&
                 coordinates.equals(otherLoc.coordinates);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(locationName, coordinates);

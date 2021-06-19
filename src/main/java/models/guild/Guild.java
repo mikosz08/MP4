@@ -1,6 +1,8 @@
 package models.guild;
 
 import models.exception.DataValidationException;
+import models.functionalities.ApplicationForm;
+import models.functionalities.events.EventImpl;
 import models.player.Player;
 import models.player.PlayerType;
 
@@ -12,23 +14,30 @@ public class Guild implements Serializable {
 
     private static List<Guild> guildsExtent = new ArrayList<>();
 
-    private final String guildName;                     //done
-    private final LocalDate dateOfCreation;              //done
-
-    private float reputationPoints;                      //done
-    private String founderNickname;                     //done
-
-    private Set<Player> guildMembers = new HashSet<>();
-
-    private final static int STARTING_REP_POINTS = 0;
+    private final String guildName;
+    private final LocalDate dateOfCreation;
 
     private Faction guildFaction;
 
-    /*// Collection of Guild applicants.
+    private float reputationPoints;
+    private String founderNickname;
+
+    //Collection of Guild Members
+    private Set<Player> guildMembers = new HashSet<>();
+
+    // Collection of Guild applicants.
     private Set<ApplicationForm> applicationForms = new HashSet<>();
 
     //Collection of Guild achievements.
     private Set<GuildAchievement> guildAchievements = new HashSet<>();
+
+    //Collection of Guild logs.
+    private Set<Log> guildLogs = new HashSet<>();
+
+    //Collection of Guild events.
+    private Set<EventImpl> guildEvents = new HashSet<>();
+
+    private final static int STARTING_REP_POINTS = 0;
 
     /**
      * Guild Constructor
@@ -103,23 +112,9 @@ public class Guild implements Serializable {
 
     public void setFounderNickname(String founderNickname) {
         if (founderNickname != null && founderNickname.trim().isBlank()) {
-            throw new DataValidationException("message cannot be empty");
+            throw new DataValidationException("founder nick cannot be empty");
         }
         this.founderNickname = founderNickname;
-    }
-
-    /**
-     * Guild Faction
-     */
-    public Faction getGuildFaction() {
-        return guildFaction;
-    }
-
-    public void setGuildFaction(Faction guildFaction) {
-        if (guildFaction == null) {
-            throw new DataValidationException("faction cannot be null!");
-        }
-        this.guildFaction = guildFaction;
     }
 
     /**
@@ -150,6 +145,12 @@ public class Guild implements Serializable {
         }
         this.guildMembers.remove(guildMember);
         guildMember.setGuild(null);
+
+        //if there is one member left - it becomes a founder
+        if (this.guildMembers.size() == 1) {
+            guildMembers.iterator().next().becomeGuildFounder();
+        }
+
     }
 
     /**
@@ -182,6 +183,129 @@ public class Guild implements Serializable {
         }
     }
 
+    public Set<ApplicationForm> getApplicationForms() {
+        return Collections.unmodifiableSet(applicationForms);
+    }
+
+    /**
+     * ApplicationForm Association
+     */
+    public void addApplicationForm(ApplicationForm applicationForm) {
+        if (applicationForm == null) {
+            throw new DataValidationException("Application from is required!");
+        }
+
+        if (this.applicationForms.contains(applicationForm)) {
+            return;
+        }
+
+        if (applicationForm.getGuild() != this) {
+            throw new DataValidationException("Guild is not related!");
+        }
+
+        this.applicationForms.add(applicationForm);
+
+    }
+
+    public void removeApplicationForm(ApplicationForm applicationForm) {
+
+        if (!this.applicationForms.contains(applicationForm)) {
+            return;
+        }
+
+        this.applicationForms.remove(applicationForm);
+        applicationForm.delete();
+
+    }
+
+    /**
+     * GuildAchievement Association
+     */
+    public Set<GuildAchievement> getGuildAchievements() {
+        return Collections.unmodifiableSet(guildAchievements);
+    }
+
+    public void addGuildAchievement(GuildAchievement newGuildAchievement) {
+        if (newGuildAchievement == null) {
+            throw new DataValidationException("Achievement is required!");
+        }
+        if (newGuildAchievement.getOwner() != this) {
+            throw new DataValidationException("Achievement is not related to this Guild!");
+        }
+        this.guildAchievements.add(newGuildAchievement);
+    }
+
+    public void removeGuildAchievement(GuildAchievement guildAchievement) {
+        if (!this.guildAchievements.contains(guildAchievement)) {
+            return;
+        }
+        this.guildAchievements.remove(guildAchievement);
+        guildAchievement.delete();
+    }
+
+    public void deleteAchievements() {
+        List<GuildAchievement> copiedAchievementList = new ArrayList<>(this.guildAchievements);
+        for (GuildAchievement ga : copiedAchievementList) {
+            ga.delete();
+        }
+    }
+
+    public Set<Log> getGuildLogs() {
+        return Collections.unmodifiableSet(guildLogs);
+    }
+
+    /**
+     * Log Association
+     */
+    public void addLog(Log log) {
+        if (log == null) {
+            throw new DataValidationException("Log is required!");
+        }
+        if (log.getOwner() != this) {
+            throw new DataValidationException("Log is not related to this Guild!");
+        }
+        this.guildLogs.add(log);
+    }
+
+    public void removeLog(Log log) {
+        if (!this.guildLogs.contains(log)) {
+            return;
+        }
+        this.guildLogs.remove(log);
+        log.delete();
+    }
+
+    public void deleteLogs() {
+        List<Log> copiedLogs = new ArrayList<>(this.guildLogs);
+        for (Log log : copiedLogs) {
+            log.delete();
+        }
+    }
+
+    /**
+     * Event Association
+     */
+    public void addEvent(EventImpl eventOrganization) {
+        if (eventOrganization == null) {
+            throw new DataValidationException("Event is required!");
+        }
+        if (this.guildEvents.contains(eventOrganization)) {
+            return;
+        }
+        if (eventOrganization.getOrganizer() != this) {
+            throw new DataValidationException("Guild is not related!");
+        }
+        this.guildEvents.add(eventOrganization);
+    }
+
+    public void removeEvent(EventImpl eventOrganization) {
+        if (!this.guildEvents.contains(eventOrganization)) {
+            return;
+        }
+        this.guildEvents.remove(eventOrganization);
+        eventOrganization.deleteCreatedEvent();
+    }
+
     /**
      * Utilities
      */
@@ -191,4 +315,22 @@ public class Guild implements Serializable {
                 getGuildName(), getFounderNickname(), getDateOfCreation(), getGuildMembers().size(), getFaction());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Guild guild = (Guild) o;
+        return Float.compare(guild.reputationPoints, reputationPoints) == 0
+                && guildName.equals(guild.guildName)
+                && dateOfCreation.equals(guild.dateOfCreation)
+                && founderNickname.equals(guild.founderNickname)
+                && guildMembers.equals(guild.guildMembers)
+                && guildFaction.equals(guild.guildFaction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guildName, dateOfCreation, reputationPoints,
+                founderNickname, guildMembers, guildFaction);
+    }
 }

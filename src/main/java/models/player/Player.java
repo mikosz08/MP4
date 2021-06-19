@@ -1,6 +1,8 @@
 package models.player;
 
 import models.exception.DataValidationException;
+import models.functionalities.ApplicationForm;
+import models.functionalities.events.EventImpl;
 import models.guild.Guild;
 
 import java.io.Serializable;
@@ -14,26 +16,27 @@ public class Player implements Serializable {
     private static List<Player> playersExtent = new ArrayList<>();
 
     private static int playerId = 1;
-    private final int id;                                                   //done
-
-    private String nickname;                                                //done
-    private int level;                                                      //done
-    private final Set<String> playerClasses = new HashSet<>(); //1..*       //done
-    private String messageOfTheDay;  //0..1                                 //done
-    private String sentenceOfTheDay; //0..1                                 //done
-    private float reputationEarned;  //0..1                                 //done
-    private float reputationAwarded;                                        //done
-    private PlayerLocation playerLocation;                                  //done
-    private LocalDate dateOfAccession;                                      //done
-
-    //wyliczalne DaysOfService int                                           //done
-
-    private PlayerType playerType;                                           //done
-
+    private final int id;
     private final static int STARTING_REP_POINTS = 0;
 
-    //private final Set<ApplicationForm> applicationForms = new HashSet<>();    //todo application form association
+    private String nickname;
+    private int level;
+    private final Set<String> playerClasses = new HashSet<>(); //1..*
+    private String messageOfTheDay;  //0..1
+    private String sentenceOfTheDay; //0..1
+    private float reputationEarned;  //0..1
+    private float reputationAwarded;
+    private PlayerLocation playerLocation;
+    private LocalDate dateOfAccession;
+    private PlayerType playerType;
     private Guild memberGuild;
+    private EventImpl participatedEvent;
+
+    //Collection of Player created events.
+    private Set<EventImpl> playerCreatedEvents = new HashSet<>();
+
+    //Collection of ApplicationForms
+    private final Set<ApplicationForm> applicationForms = new HashSet<>();
 
     /**
      * Player Constructor
@@ -303,6 +306,88 @@ public class Player implements Serializable {
         } else {
             this.memberGuild = newGuild;
             newGuild.addGuildMember(this);
+        }
+    }
+
+    /**
+     * ApplicationForm Association
+     */
+    public Set<ApplicationForm> getApplicationForms() {
+        return Collections.unmodifiableSet(applicationForms);
+    }
+
+    public void addApplication(ApplicationForm newApplicationForm) {
+
+        if (newApplicationForm == null) {
+            throw new DataValidationException("ApplicationForm is required!");
+        }
+
+        if (this.applicationForms.contains(newApplicationForm)) {
+            return;
+        }
+
+        if (newApplicationForm.getPlayer() != this) {
+            throw new DataValidationException("Member is not related to this application!");
+        }
+
+        this.applicationForms.add(newApplicationForm);
+    }
+
+    public void removeApplicationForm(ApplicationForm applicationForm) {
+
+        if (!this.applicationForms.contains(applicationForm)) {
+            return;
+        }
+
+        this.applicationForms.remove(applicationForm);
+        applicationForm.delete();
+
+    }
+
+    /**
+     * Event Creation Association
+     */
+    public void addEvent(EventImpl eventToCreate) {
+        if (eventToCreate == null) {
+            throw new DataValidationException("Event is required!");
+        }
+        if (this.playerCreatedEvents.contains(eventToCreate)) {
+            return;
+        }
+        if (eventToCreate.getCreator() != this) {
+            throw new DataValidationException("Creator is not related!");
+        }
+        this.playerCreatedEvents.add(eventToCreate);
+    }
+
+    public void removeEvent(EventImpl eventOrganization) {
+        if (!this.playerCreatedEvents.contains(eventOrganization)) {
+            return;
+        }
+        this.playerCreatedEvents.remove(eventOrganization);
+        eventOrganization.deleteCreatedEvent();
+    }
+
+    /**
+     * Event Participation Association
+     */
+    public EventImpl getParticipatedEvent() {
+        return participatedEvent;
+    }
+
+    public void setParticipatedEvent(EventImpl participatedEvent) {
+        if (participatedEvent == null) {
+            throw new DataValidationException("Event is required!");
+        }
+        this.participatedEvent = participatedEvent;
+        participatedEvent.addEventParticipant(this);
+    }
+
+    public void delete() {
+        if (this.participatedEvent != null) {
+            EventImpl tmpEvent = this.participatedEvent;
+            this.participatedEvent = null;
+            tmpEvent.removeEventParticipant(this);
         }
     }
 

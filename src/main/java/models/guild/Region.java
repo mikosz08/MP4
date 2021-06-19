@@ -32,7 +32,7 @@ public class Region implements Serializable {
     }
 
     /**
-     * Region Factions
+     * Faction Association
      */
     public Map<Integer, Faction> getFactions() {
         return Collections.unmodifiableMap(factions);

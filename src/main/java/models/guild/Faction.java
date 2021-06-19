@@ -45,8 +45,6 @@ public class Faction implements Serializable {
         this.factionName = factionName;
     }
 
-
-
     public int getRegionId() {
         return regionId;
     }
@@ -75,6 +73,7 @@ public class Faction implements Serializable {
     public Region getRegion() {
         return region;
     }
+
     public void setRegion(Region newRegion) {
         if (this.region == newRegion) {
             return;
@@ -95,7 +94,7 @@ public class Faction implements Serializable {
             newRegion.addFaction(this);
 
         }
-        this.region = newRegion;
+        //this.region = newRegion;
     }
 
     public void setRegionId(int regionId) {
@@ -110,7 +109,7 @@ public class Faction implements Serializable {
         } else {
             this.regionId = regionId;
         }
-        this.regionId = regionId;
+        //this.regionId = regionId;
     }
 
     /**
@@ -139,24 +138,24 @@ public class Faction implements Serializable {
         return Collections.unmodifiableSet(guilds);
     }
 
-    public void addGuild(Guild newGuild) {
-        if (newGuild == null) {
-            throw new DataValidationException("guild is null!");
+    public void addGuild(Guild guild) {
+        if (guild == null) {
+            throw new DataValidationException("Guild is null!");
         }
-        if (this.guilds.contains(newGuild)) {
+        if (this.guilds.contains(guild)) {
             return;
         }
-        this.guilds.add(newGuild);
-        newGuild.setFaction(this);
+        this.guilds.add(guild);
+        guild.setFaction(this);
     }
 
-    public void removeGuild(Guild guildMember) {
-        if (!this.guilds.contains(guildMember)) {
+    public void removeGuild(Guild guild) {
+        if (!this.guilds.contains(guild)) {
             return;
         }
 
-        this.guilds.remove(guildMember);
-        guildMember.setFaction(null);
+        this.guilds.remove(guild);
+        guild.setFaction(null);
     }
 
     /**
