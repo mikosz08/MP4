@@ -1,11 +1,17 @@
 package models.guild;
 
 import models.exception.DataValidationException;
+import models.functionalities.ApplicationForm;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GuildAchievement implements Serializable {
+
+    private static List<GuildAchievement> guildAchievementExtent = new ArrayList<>();
 
     private String achievementName;
     private String requirements;
@@ -21,21 +27,11 @@ public class GuildAchievement implements Serializable {
         setRequirements(requirements);
         setEarnDate(LocalDate.now());
         setOwner(owner);
+        guildAchievementExtent.add(this);
     }
 
     /**
-     * Achievement Delete
-     */
-    public void delete() {
-        if (this.owner != null) {
-            Guild tmpOwner = this.owner;
-            this.owner = null;
-            tmpOwner.removeGuildAchievement(this);
-        }
-    }
-
-    /**
-     * Achievement Owner
+     * Guild Association
      */
     public Guild getOwner() {
         return owner;
@@ -47,6 +43,14 @@ public class GuildAchievement implements Serializable {
         }
         this.owner = owner;
         owner.addGuildAchievement(this);
+    }
+
+    public void deleteGuild() {
+        if (this.owner != null) {
+            Guild tmpOwner = this.owner;
+            this.owner = null;
+            tmpOwner.removeGuildAchievement(this);
+        }
     }
 
     /**
@@ -80,6 +84,25 @@ public class GuildAchievement implements Serializable {
 
     public void setEarnDate(LocalDate earnDate) {
         this.earnDate = earnDate;
+    }
+
+    /**
+     * Guild Achievement Extension
+     */
+    public static List<GuildAchievement> getGuildAchievementsExtent() {
+        return Collections.unmodifiableList(guildAchievementExtent);
+    }
+
+    public static void setApplicationFormExtent(List<GuildAchievement> guildAchievementExtent) {
+        if (guildAchievementExtent == null) {
+            throw new DataValidationException("Extent cannot be null!");
+        }
+        GuildAchievement.guildAchievementExtent = guildAchievementExtent;
+    }
+
+    //testing
+    public static void clearExtension() {
+        guildAchievementExtent.clear();
     }
 
     @Override

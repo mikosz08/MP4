@@ -1,10 +1,13 @@
 package serialization;
 
 import models.exception.DataValidationException;
-import models.guild.Faction;
-import models.guild.Guild;
-import models.guild.Region;
+import models.functionalities.ApplicationForm;
+import models.functionalities.events.EventImpl;
+import models.functionalities.shop.Boost;
+import models.functionalities.shop.Shop;
+import models.guild.*;
 import models.player.Player;
+import models.player.equipment.Equipment;
 
 import java.io.*;
 import java.util.List;
@@ -15,9 +18,16 @@ public class ExtentManager {
     private static void saveExtent() {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(EXTENT_FILE_PATH))) {
             output.writeObject(Player.getPlayersExtent());
-            output.writeObject(Guild.getGuildExtent());
-            output.writeObject(Faction.getFactionExtent());
-            output.writeObject(Region.getRegionExtent());
+            output.writeObject(Guild.getGuildsExtent());
+            output.writeObject(Faction.getFactionsExtent());
+            output.writeObject(Region.getRegionsExtent());
+            output.writeObject(ApplicationForm.getApplicationFormsExtent());
+            output.writeObject(GuildAchievement.getGuildAchievementsExtent());
+            output.writeObject(Log.getLogsExtent());
+            output.writeObject(EventImpl.getEventsExtent());
+            output.writeObject(Equipment.getEquipmentsExtent());
+            output.writeObject(Shop.getShopsExtent());
+            output.writeObject(Boost.getBoostsExtent());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,6 +39,13 @@ public class ExtentManager {
             Guild.setGuildExtent((List<Guild>) output.readObject());
             Faction.setFactionExtent((List<Faction>) output.readObject());
             Region.setRegionExtent((List<Region>) output.readObject());
+            ApplicationForm.setApplicationFormExtent((List<ApplicationForm>) output.readObject());
+            GuildAchievement.setApplicationFormExtent((List<GuildAchievement>) output.readObject());
+            Log.setLogExtent((List<Log>) output.readObject());
+            EventImpl.setEventExtent((List<EventImpl>) output.readObject());
+            Equipment.setEquipmentExtent((List<Equipment>) output.readObject());
+            Shop.setLogExtent((List<Shop>) output.readObject());
+            Boost.setBoostsExtent((List<Boost>) output.readObject());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

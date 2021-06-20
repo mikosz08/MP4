@@ -3,7 +3,11 @@ package models.player;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
 import models.functionalities.events.EventType;
+import models.functionalities.shop.Boost;
+import models.functionalities.shop.BoostType;
+import models.functionalities.shop.Shop;
 import models.guild.*;
+import models.player.equipment.*;
 import serialization.ExtentManager;
 
 import java.time.LocalDate;
@@ -14,10 +18,27 @@ public class PlayerTest {
 
     public static void main(String[] args) {
 
-        //serializationTest();
+        serializationTest();
         //testApplicationForm();
         //testGuildAchievement();
-        testEventCreation();
+        // testEventCreation();
+        //testEQ();
+    }
+
+    private static void testEQ() {
+
+        Stats stats = new Stats(1, 2, 3);
+
+        Equipment common = new CommonEQ("Mieczyk", 1, stats);
+        System.out.println(common);
+        Equipment legendary = new LegendaryEQ("Legendarny Mieczyk",
+                10, stats, 1, 2, 0);
+        System.out.println(legendary);
+        Equipment magic = new MagicEqImpl("Magiczny Miezcyk", 5, stats, 15);
+        System.out.println(magic);
+        Equipment magicLegendary = new MagicLegendaryEQ("Super Mieczyk", 25, stats, 5, 5, 5, 6);
+        System.out.println(magicLegendary);
+
     }
 
     private static void testEventCreation() {
@@ -65,30 +86,71 @@ public class PlayerTest {
         Guild guild2 = new Guild("CNO", player1, faction1);
         Guild guild3 = new Guild("CTN", player2, faction2);
 
-        System.out.println(guild1 == guild1);
-        System.out.println(guild1.equals(guild1));
+        ApplicationForm ap = new ApplicationForm("message123", guild1, player1);
 
-        System.out.println(Player.getPlayersExtent().size());
-        System.out.println(Guild.getGuildExtent().size());
-        System.out.println(Region.getRegionExtent().size());
-        System.out.println(Faction.getFactionExtent().size());
+        GuildAchievement ga = new GuildAchievement("achiName", "reqs", guild1);
+
+        Log l = new Log("hello", guild1);
+
+        EventImpl event = new EventImpl(guild1, player1, "name", LocalDate.now(), LocalDate.now(),
+                1, 2, 3, EnumSet.of(EventType.GOLD_EVENT));
+
+        Equipment eq = new MagicEqImpl("name", 1,
+                new Stats(1, 2, 3), 1);
+
+        Shop s = new Shop();
+
+        Boost b = new Boost("boost", LocalDate.now(), 5, BoostType.REGION_BOOST);
+
+        System.out.println("P:" + Player.getPlayersExtent().size());
+        System.out.println("G:" + Guild.getGuildsExtent().size());
+        System.out.println("R:" + Region.getRegionsExtent().size());
+        System.out.println("F:" + Faction.getFactionsExtent().size());
+        System.out.println("AF:" + ApplicationForm.getApplicationFormsExtent().size());
+        System.out.println("GA:" + GuildAchievement.getGuildAchievementsExtent().size());
+        System.out.println("L:" + Log.getLogsExtent().size());
+        System.out.println("E:" + EventImpl.getEventsExtent().size());
+        System.out.println("EQ:" + Equipment.getEquipmentsExtent().size());
+        System.out.println("SH:" + Shop.getShopsExtent().size());
+        System.out.println("B:" + Boost.getBoostsExtent().size());
         ExtentManager.save();
 
         Player.clearExtension();
         Guild.clearExtension();
         Region.clearExtension();
         Faction.clearExtension();
+        ApplicationForm.clearExtension();
+        GuildAchievement.clearExtension();
+        Log.clearExtension();
+        EventImpl.clearExtension();
+        Equipment.clearExtension();
+        Shop.clearExtension();
+        Boost.clearExtension();
 
-        System.out.println(Player.getPlayersExtent().size());
-        System.out.println(Guild.getGuildExtent().size());
-        System.out.println(Region.getRegionExtent().size());
-        System.out.println(Faction.getFactionExtent().size());
+        System.out.println("\nP:" + Player.getPlayersExtent().size());
+        System.out.println("G:" + Guild.getGuildsExtent().size());
+        System.out.println("R:" + Region.getRegionsExtent().size());
+        System.out.println("F:" + Faction.getFactionsExtent().size());
+        System.out.println("AF:" + ApplicationForm.getApplicationFormsExtent().size());
+        System.out.println("GA:" + GuildAchievement.getGuildAchievementsExtent().size());
+        System.out.println("L:" + Log.getLogsExtent().size());
+        System.out.println("E:" + EventImpl.getEventsExtent().size());
+        System.out.println("EQ:" + Equipment.getEquipmentsExtent().size());
+        System.out.println("SH:" + Shop.getShopsExtent().size());
+        System.out.println("B:" + Boost.getBoostsExtent().size());
 
         ExtentManager.load();
-        System.out.println(Player.getPlayersExtent().size());
-        System.out.println(Guild.getGuildExtent().size());
-        System.out.println(Region.getRegionExtent().size());
-        System.out.println(Faction.getFactionExtent().size());
+        System.out.println("\nP:" + Player.getPlayersExtent().size());
+        System.out.println("G:" + Guild.getGuildsExtent().size());
+        System.out.println("R:" + Region.getRegionsExtent().size());
+        System.out.println("F:" + Faction.getFactionsExtent().size());
+        System.out.println("AF:" + ApplicationForm.getApplicationFormsExtent().size());
+        System.out.println("GA:" + GuildAchievement.getGuildAchievementsExtent().size());
+        System.out.println("L:" + Log.getLogsExtent().size());
+        System.out.println("E:" + EventImpl.getEventsExtent().size());
+        System.out.println("EQ:" + Equipment.getEquipmentsExtent().size());
+        System.out.println("SH:" + Shop.getShopsExtent().size());
+        System.out.println("B:" + Boost.getBoostsExtent().size());
     }
 
     private static void testApplicationForm() {

@@ -3,6 +3,7 @@ package models.guild;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
+import models.functionalities.shop.Boost;
 import models.player.Player;
 import models.player.PlayerType;
 
@@ -37,6 +38,9 @@ public class Guild implements Serializable {
     //Collection of Guild events.
     private Set<EventImpl> guildEvents = new HashSet<>();
 
+    //Collection of Guild Boosts.
+    private Set<Boost> guildBoosts = new HashSet<>();
+
     private final static int STARTING_REP_POINTS = 0;
 
     /**
@@ -59,7 +63,7 @@ public class Guild implements Serializable {
     /**
      * Guild Extension
      */
-    public static List<Guild> getGuildExtent() {
+    public static List<Guild> getGuildsExtent() {
         return Collections.unmodifiableList(guildsExtent);
     }
 
@@ -240,23 +244,23 @@ public class Guild implements Serializable {
             return;
         }
         this.guildAchievements.remove(guildAchievement);
-        guildAchievement.delete();
+        guildAchievement.deleteGuild();
     }
 
     public void deleteAchievements() {
         List<GuildAchievement> copiedAchievementList = new ArrayList<>(this.guildAchievements);
         for (GuildAchievement ga : copiedAchievementList) {
-            ga.delete();
+            ga.deleteGuild();
         }
-    }
-
-    public Set<Log> getGuildLogs() {
-        return Collections.unmodifiableSet(guildLogs);
     }
 
     /**
      * Log Association
      */
+    public Set<Log> getGuildLogs() {
+        return Collections.unmodifiableSet(guildLogs);
+    }
+
     public void addLog(Log log) {
         if (log == null) {
             throw new DataValidationException("Log is required!");
@@ -304,6 +308,38 @@ public class Guild implements Serializable {
         }
         this.guildEvents.remove(eventOrganization);
         eventOrganization.deleteCreatedEvent();
+    }
+
+    /**
+     * Boost Association
+     */
+    public Set<Boost> getGuildBoosts() {
+        return Collections.unmodifiableSet(guildBoosts);
+    }
+
+    public void addBoost(Boost newBoost) {
+        if (newBoost == null) {
+            throw new DataValidationException("Boost is required!");
+        }
+        if (newBoost.getOwner() != this) {
+            throw new DataValidationException("Boost is not related to this Guild!");
+        }
+        this.guildBoosts.add(newBoost);
+    }
+
+    public void removeGuildBoost(Boost boost) {
+        if (!this.guildBoosts.contains(boost)) {
+            return;
+        }
+        this.guildBoosts.remove(boost);
+        boost.deleteGuild();
+    }
+
+    public void deleteBoost() {
+        List<Boost> copiedBoosts = new ArrayList<>(this.guildBoosts);
+        for (Boost b : copiedBoosts) {
+            b.deleteGuild();
+        }
     }
 
     /**

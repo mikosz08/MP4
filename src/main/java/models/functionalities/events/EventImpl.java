@@ -2,6 +2,7 @@ package models.functionalities.events;
 
 import models.exception.DataValidationException;
 import models.guild.Guild;
+import models.guild.Log;
 import models.player.Player;
 import models.player.PlayerType;
 
@@ -15,7 +16,7 @@ import static models.functionalities.events.EventType.*;
 
 public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable {
 
-    private static List<EventImpl> eventOrganizationsExtent = new ArrayList<>();
+    private static List<EventImpl> eventExtent = new ArrayList<>();
 
     private static int eventOrganizationId = 0;
     private final int id;
@@ -23,6 +24,7 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
     private String eventName;
     private LocalDate startDate;
     private LocalDate endDate;
+    private EnumSet<EventType> eventTypes;
 
     //ExpEvent
     private Integer expPercentageBoost;
@@ -31,15 +33,15 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
     //SocialEvent
     private Integer reputationPercentageBoost;
 
-
     private Player creator;
     private Guild organizer;
 
     //Collection of Event participants.
     private Set<Player> eventParticipants = new HashSet<>();
 
-    private EnumSet<EventType> eventTypes;
-
+    /**
+     * Event Constructor
+     */
     public EventImpl(Guild organizer, Player creator, String eventName, LocalDate startDate, LocalDate endDate,
                      Integer expPercentageBoost, Integer goldPercentageBoost, Integer reputationPercentageBoost,
                      EnumSet<EventType> eventTypes) {
@@ -60,12 +62,20 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         if (eventTypes.contains(REP_EVENT)) {
             setReputationEarnBoost(reputationPercentageBoost);
         }
+
+        eventExtent.add(this);
     }
 
+    /**
+     * Event ID
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Event Required Level
+     */
     @Override
     public int getRequiredLevel() {
 
@@ -88,6 +98,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         throw new DataValidationException("Event need a type.");
     }
 
+    /**
+     * Event Type
+     */
     private void setEventType(EnumSet<EventType> eventTypes) {
         if (eventTypes == null || eventTypes.isEmpty()) {
             throw new DataValidationException("Event need at least one type.");
@@ -95,6 +108,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.eventTypes = eventTypes;
     }
 
+    /**
+     * Event EXP
+     */
     @Override
     public int getExpPercentageBoost() {
         if (eventTypes.contains(EXP_EVENT)) {
@@ -111,6 +127,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.expPercentageBoost = percentageBoost;
     }
 
+    /**
+     * Event GOLD
+     */
     @Override
     public int getGoldFindChanceBoost() {
         if (eventTypes.contains(GOLD_EVENT)) {
@@ -127,6 +146,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.goldPercentageBoost = percentageBoost;
     }
 
+    /**
+     * Event REP
+     */
     @Override
     public int getReputationEarnBoost() {
         if (eventTypes.contains(REP_EVENT)) {
@@ -143,7 +165,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.reputationPercentageBoost = percentageBoost;
     }
 
-
+    /**
+     * Event Name
+     */
     public String getEventName() {
         return eventName;
     }
@@ -155,6 +179,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.eventName = eventName;
     }
 
+    /**
+     * Event Start Date
+     */
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -166,6 +193,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         this.startDate = startDate;
     }
 
+    /**
+     * Event End Date
+     */
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -190,7 +220,7 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         }
 
         PlayerType creatorType = creator.getPlayerType();
-        if(creatorType != PlayerType.GUILD_OFFICER && creatorType != PlayerType.GUILD_FOUNDER){
+        if (creatorType != PlayerType.GUILD_OFFICER && creatorType != PlayerType.GUILD_FOUNDER) {
             throw new DataValidationException(creatorType + " is not allowed to create an event!");
         }
 
@@ -198,6 +228,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         creator.addEvent(this);
     }
 
+    /**
+     * Event Organizer
+     */
     public Guild getOrganizer() {
         return organizer;
     }
@@ -226,7 +259,7 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
             this.creator = null;
             tmpPlayer.removeEvent(this);
         }
-        eventOrganizationsExtent.remove(this);
+        eventExtent.remove(this);
     }
 
     /**
@@ -247,22 +280,40 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
             return;
         }
         this.eventParticipants.remove(player);
-        player.delete();
+        player.deleteParticipants();
     }
 
     public void deleteParticipants() {
         List<Player> copiedEventParticipants = new ArrayList<>(this.eventParticipants);
         for (Player participant : copiedEventParticipants) {
-            participant.delete();
+            participant.deleteParticipants();
         }
     }
 
+    /**
+     * Event Extension
+     */
+    public static List<EventImpl> getEventsExtent() {
+        return Collections.unmodifiableList(eventExtent);
+    }
+
+    public static void setEventExtent(List<EventImpl> eventExtent) {
+        if (eventExtent == null) {
+            throw new DataValidationException("Extent cannot be null!");
+        }
+        EventImpl.eventExtent = eventExtent;
+    }
+
+    //testing
+    public static void clearExtension() {
+        eventExtent.clear();
+    }
 
     /**
      * Unique
      */
     private boolean isUnique() {
-        for (EventImpl event : eventOrganizationsExtent) {
+        for (EventImpl event : eventExtent) {
             if (event.organizer == this.organizer && event.creator == this.creator) {
                 return false;
             }
@@ -270,6 +321,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         return true;
     }
 
+    /**
+     * Utilities
+     */
     @Override
     public String toString() {
         return String.format("Name: %s, Start: %s, End: %s, Organizer: %s, Creator: %s",

@@ -145,7 +145,7 @@ public class ApplicationForm implements Serializable {
     /**
      * Application Extension
      */
-    public static List<ApplicationForm> getApplicationFormExtent() {
+    public static List<ApplicationForm> getApplicationFormsExtent() {
         return Collections.unmodifiableList(applicationFormExtent);
     }
 

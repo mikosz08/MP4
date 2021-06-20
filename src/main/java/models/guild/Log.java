@@ -2,9 +2,15 @@ package models.guild;
 
 import models.exception.DataValidationException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Log {
+public class Log implements Serializable {
+
+    private static List<Log> logsExtent = new ArrayList<>();
 
     private String message;
     private final LocalDate time;
@@ -15,6 +21,8 @@ public class Log {
         setMessage(message);
         this.time = LocalDate.now();
         setOwner(owner);
+
+        logsExtent.add(this);
     }
 
     public String getMessage() {
@@ -53,6 +61,25 @@ public class Log {
         }
         this.owner = owner;
         owner.addLog(this);
+    }
+
+    /**
+     * Log Extension
+     */
+    public static List<Log> getLogsExtent() {
+        return Collections.unmodifiableList(logsExtent);
+    }
+
+    public static void setLogExtent(List<Log> logsExtent) {
+        if (logsExtent == null) {
+            throw new DataValidationException("Extent cannot be null!");
+        }
+        Log.logsExtent = logsExtent;
+    }
+
+    //testing
+    public static void clearExtension() {
+        logsExtent.clear();
     }
 
     /**

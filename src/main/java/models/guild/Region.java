@@ -81,7 +81,7 @@ public class Region implements Serializable {
     /**
      * Faction Extension
      */
-    public static List<Region> getRegionExtent() {
+    public static List<Region> getRegionsExtent() {
         return Collections.unmodifiableList(regionsExtent);
     }
 

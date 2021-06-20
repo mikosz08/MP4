@@ -115,7 +115,7 @@ public class Faction implements Serializable {
     /**
      * Faction Extension
      */
-    public static List<Faction> getFactionExtent() {
+    public static List<Faction> getFactionsExtent() {
         return Collections.unmodifiableList(factionsExtent);
     }
 

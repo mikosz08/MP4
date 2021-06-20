@@ -3,7 +3,9 @@ package models.player;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
+import models.functionalities.shop.Shop;
 import models.guild.Guild;
+import models.player.equipment.Equipment;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -31,12 +33,16 @@ public class Player implements Serializable {
     private PlayerType playerType;
     private Guild memberGuild;
     private EventImpl participatedEvent;
+    private Shop shop;
 
     //Collection of Player created events.
     private Set<EventImpl> playerCreatedEvents = new HashSet<>();
 
     //Collection of ApplicationForms
     private final Set<ApplicationForm> applicationForms = new HashSet<>();
+
+    //Collection of Equipment
+    private final Set<Equipment> equipment = new HashSet<>();
 
     /**
      * Player Constructor
@@ -89,13 +95,13 @@ public class Player implements Serializable {
 
     public void setNickname(String nickname) {
         if (nickname == null || nickname.trim().isBlank()) {
-            throw new DataValidationException("nickname cannot be null or empty");
+            throw new DataValidationException("Nickname cannot be null or empty!");
         }
         this.nickname = nickname;
     }
 
     /**
-     * Level
+     * Player Level
      */
     public int getLevel() {
         return level;
@@ -103,7 +109,7 @@ public class Player implements Serializable {
 
     public void setLevel(int level) {
         if (level < 1) {
-            throw new DataValidationException("level cannot be less than 1");
+            throw new DataValidationException("Level cannot be less than 1!");
         }
         this.level = level;
     }
@@ -117,23 +123,23 @@ public class Player implements Serializable {
 
     public void addPlayerClass(String playerClass) {
         if (playerClass == null || playerClass.trim().isBlank()) {
-            throw new DataValidationException("player class cannot be null or empty");
+            throw new DataValidationException("Player class cannot be null or empty!");
         }
         this.playerClasses.add(playerClass);
     }
 
     public void removePlayerClass(String playerClass) {
         if (playerClass == null || playerClass.trim().isBlank()) {
-            throw new DataValidationException("player class cannot be null or empty");
+            throw new DataValidationException("Player class cannot be null or empty!");
         }
         if (playerClasses.size() <= 1) {
-            throw new DataValidationException("cannot remove last player's class");
+            throw new DataValidationException("Cannot remove last player's class!");
         }
         this.playerClasses.remove(playerClass);
     }
 
     /**
-     * MessageOfTheDay
+     * Player MessageOfTheDay
      */
     public Optional<String> getMessageOfTheDay() {
         return Optional.ofNullable(messageOfTheDay);
@@ -141,13 +147,13 @@ public class Player implements Serializable {
 
     public void setMessageOfTheDay(String messageOfTheDay) {
         if (messageOfTheDay != null && messageOfTheDay.trim().isBlank()) {
-            throw new DataValidationException("message cannot be empty");
+            throw new DataValidationException("Message cannot be empty!");
         }
         this.messageOfTheDay = messageOfTheDay;
     }
 
     /**
-     * SentenceOfTheDay
+     * Player SentenceOfTheDay
      */
     public Optional<String> getSentenceOfTheDay() {
         return Optional.ofNullable(sentenceOfTheDay);
@@ -155,16 +161,16 @@ public class Player implements Serializable {
 
     public void setSentenceOfTheDay(String sentenceOfTheDay) {
         if (playerType != PlayerType.GUILD_FOUNDER) {
-            throw new DataValidationException("only guild founder can set the sentence");
+            throw new DataValidationException("Only guild founder can set the sentence!");
         }
         if (sentenceOfTheDay != null && sentenceOfTheDay.trim().isBlank()) {
-            throw new DataValidationException("sentence cannot be empty");
+            throw new DataValidationException("Sentence cannot be empty!");
         }
         this.sentenceOfTheDay = sentenceOfTheDay;
     }
 
     /**
-     * ReputationEarned
+     * Player ReputationEarned
      */
     public float getReputationEarned() {
         return reputationEarned;
@@ -172,13 +178,13 @@ public class Player implements Serializable {
 
     public void setReputationEarned(float reputationEarned) {
         if (reputationEarned < 0) {
-            throw new DataValidationException("reputation earned cannot be less than 0");
+            throw new DataValidationException("Reputation earned cannot be less than 0!");
         }
         this.reputationEarned = reputationEarned;
     }
 
     /**
-     * Reputation Awarded.
+     * Player Reputation Awarded.
      */
     public float getReputationAwarded() {
         return reputationAwarded;
@@ -186,13 +192,13 @@ public class Player implements Serializable {
 
     public void setReputationAwarded(float reputationAwarded) {
         if (reputationAwarded < 0) {
-            throw new DataValidationException("reputation awarded cannot be less than 0");
+            throw new DataValidationException("Reputation awarded cannot be less than 0!");
         }
         this.reputationAwarded += reputationAwarded;
     }
 
     /**
-     * Date of Accession.
+     * Player Date of Accession.
      */
     public LocalDate getDateOfAccession() {
         return dateOfAccession;
@@ -200,13 +206,13 @@ public class Player implements Serializable {
 
     public void setDateOfAccession(LocalDate dateOfAccession) {
         if (dateOfAccession == null) {
-            throw new DataValidationException("date of accession cannot be null");
+            throw new DataValidationException("Date of accession cannot be null!");
         }
         this.dateOfAccession = dateOfAccession;
     }
 
     /**
-     * Days of Service
+     * Player Days of Service
      */
     public int getDaysOfService() {
         return (int) Duration.between(dateOfAccession.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
@@ -221,7 +227,7 @@ public class Player implements Serializable {
 
     public void setPlayerLocation(PlayerLocation playerLocation) {
         if (playerLocation == null) {
-            throw new DataValidationException("location cannot be null");
+            throw new DataValidationException("Location cannot be null!");
         }
         this.playerLocation = playerLocation;
     }
@@ -235,13 +241,13 @@ public class Player implements Serializable {
 
     public void setPlayerType(PlayerType playerType) {
         if (playerType == null) {
-            throw new DataValidationException("player need a type");
+            throw new DataValidationException("Player need a type!");
         }
         this.playerType = playerType;
     }
 
     /**
-     * Extension
+     * Player Extension
      */
     public static List<Player> getPlayersExtent() {
         return Collections.unmodifiableList(playersExtent);
@@ -249,7 +255,7 @@ public class Player implements Serializable {
 
     public static void setPlayersExtent(List<Player> extent) {
         if (extent == null) {
-            throw new DataValidationException("extent cannot be null");
+            throw new DataValidationException("Extent cannot be null!");
         }
         Player.playersExtent = extent;
     }
@@ -383,11 +389,65 @@ public class Player implements Serializable {
         participatedEvent.addEventParticipant(this);
     }
 
-    public void delete() {
+    public void deleteParticipants() {
         if (this.participatedEvent != null) {
             EventImpl tmpEvent = this.participatedEvent;
             this.participatedEvent = null;
             tmpEvent.removeEventParticipant(this);
+        }
+    }
+
+    /**
+     * Equipment Association
+     */
+    public void addEquipment(Equipment eq) {
+        if (eq == null) {
+            throw new DataValidationException("Log is required!");
+        }
+        if (eq.getOwner() != this) {
+            throw new DataValidationException("Log is not related to this Guild!");
+        }
+        this.equipment.add(eq);
+    }
+
+    public void removeEquipment(Equipment eq) {
+        if (!this.equipment.contains(eq)) {
+            return;
+        }
+        this.equipment.remove(eq);
+        eq.delete();
+    }
+
+    public void deleteEquipment() {
+        List<Equipment> copiedEq = new ArrayList<>(this.equipment);
+        for (Equipment eq : copiedEq) {
+            eq.delete();
+        }
+    }
+
+    /**
+     * Shop Association
+     */
+    public Shop getShop() {
+        return shop;
+    }
+
+    private void setOwner(Shop shop) {
+        if (shop == null) {
+            throw new DataValidationException("Owner is required!");
+        }
+        this.shop = shop;
+        shop.addPlayer(this);
+    }
+
+    /**
+     * Shop Delete
+     */
+    public void deleteShop() {
+        if (this.shop != null) {
+            Shop tmpShop = this.shop;
+            this.shop = null;
+            tmpShop.removePlayer(this);
         }
     }
 
