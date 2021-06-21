@@ -164,7 +164,7 @@ public class Faction implements Serializable {
     @Override
     public String toString() {
         return String.format("Name: %s, Leader: %s, Region: %s",
-                getFactionName(), getLeader().getLeaderName(), getRegion());
+                getFactionName(), getLeader().getLeaderName(), getRegion().getRegionName());
     }
 
 }

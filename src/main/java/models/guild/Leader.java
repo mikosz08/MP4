@@ -34,7 +34,7 @@ public class Leader implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("LeaderName: %s", getLeaderName());
+        return String.format("Leader Name: %s", getLeaderName());
     }
 
 }

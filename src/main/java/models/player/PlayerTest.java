@@ -17,15 +17,14 @@ public class PlayerTest {
     //REMOVE THIS
 
     public static void main(String[] args) {
-
-        serializationTest();
+        //serializationTest();
         //testApplicationForm();
         //testGuildAchievement();
         // testEventCreation();
         //testEQ();
     }
 
-    private static void testEQ() {
+/*    private static void testEQ() {
 
         Stats stats = new Stats(1, 2, 3);
 
@@ -98,9 +97,10 @@ public class PlayerTest {
         Equipment eq = new MagicEqImpl("name", 1,
                 new Stats(1, 2, 3), 1);
 
-        Shop s = new Shop();
+        Shop s = player1.getShop();
 
-        Boost b = new Boost("boost", LocalDate.now(), 5, BoostType.REGION_BOOST);
+        Boost b = new Boost("boost", guild1, s, LocalDate.now(), 5, BoostType.REGION_BOOST);
+
 
         System.out.println("P:" + Player.getPlayersExtent().size());
         System.out.println("G:" + Guild.getGuildsExtent().size());
@@ -194,6 +194,6 @@ public class PlayerTest {
         System.out.println(log);
 
 
-    }
+    }*/
 
 }

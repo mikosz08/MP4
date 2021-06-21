@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.LoginGUI">
+  <grid id="27dc6" binding="mainLoginPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="278" height="182"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="ed2ee" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="etched" title="Who are you?"/>
+        <children>
+          <component id="fcb63" class="javax.swing.JTextField" binding="enterYourDataTextField" default-binding="true">
+            <constraints border-constraint="North"/>
+            <properties>
+              <editable value="false"/>
+              <maximumSize width="120" height="26"/>
+              <minimumSize width="120" height="26"/>
+              <preferredSize width="120" height="26"/>
+              <text value="Enter your data:"/>
+            </properties>
+          </component>
+          <grid id="541ef" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="1aed9" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="West"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="7649a" class="javax.swing.JTextField" binding="usernameTextField" default-binding="true">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <maximumSize width="120" height="26"/>
+                      <minimumSize width="120" height="26"/>
+                      <preferredSize width="120" height="26"/>
+                      <text value="username"/>
+                    </properties>
+                  </component>
+                  <component id="aa580" class="javax.swing.JTextField" binding="levelTextField" default-binding="true">
+                    <constraints border-constraint="North"/>
+                    <properties>
+                      <maximumSize width="120" height="26"/>
+                      <minimumSize width="120" height="26"/>
+                      <preferredSize width="120" height="26"/>
+                      <text value="level"/>
+                    </properties>
+                  </component>
+                  <grid id="95e6a" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                    <constraints border-constraint="South"/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="814ef" class="javax.swing.JTextField" binding="locationNameTextField" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="120" height="26"/>
+                          <minimumSize width="120" height="26"/>
+                          <preferredSize width="120" height="26"/>
+                          <text value="location name"/>
+                        </properties>
+                      </component>
+                      <component id="e6241" class="javax.swing.JTextField" binding="xTextField" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="20" height="20"/>
+                          <minimumSize width="20" height="20"/>
+                          <preferredSize width="20" height="20"/>
+                          <text value="x"/>
+                        </properties>
+                      </component>
+                      <component id="70764" class="javax.swing.JTextField" binding="yTextField" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="20" height="20"/>
+                          <minimumSize width="20" height="20"/>
+                          <preferredSize width="20" height="20"/>
+                          <text value="y"/>
+                        </properties>
+                      </component>
+                      <grid id="38bdf" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints/>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                    </children>
+                  </grid>
+                  <component id="1e5ce" class="javax.swing.JTextField" binding="classTextField" default-binding="true">
+                    <constraints border-constraint="West"/>
+                    <properties>
+                      <maximumSize width="120" height="26"/>
+                      <minimumSize width="120" height="26"/>
+                      <preferredSize width="120" height="26"/>
+                      <text value="class"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="9993" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="etched"/>
+            <children>
+              <component id="83778" class="javax.swing.JButton" binding="Default">
+                <constraints/>
+                <properties>
+                  <text value="Default"/>
+                </properties>
+              </component>
+              <component id="54b24" class="javax.swing.JButton" binding="Submit">
+                <constraints/>
+                <properties>
+                  <text value="Submit"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

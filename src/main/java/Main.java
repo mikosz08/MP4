@@ -1,7 +1,22 @@
-import gui.MainGUI;
+import gui.LoginGUI;
+import serialization.DefaultDataManager;
+
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-        new MainGUI();
+
+        initDefaultData();
+        EventQueue.invokeLater(LoginGUI::new);
+
     }
+
+    private static void initDefaultData() {
+
+        DefaultDataManager.CreateDefaultGuilds();
+
+    }
+
+
+
 }

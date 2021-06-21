@@ -187,13 +187,13 @@ public class Guild implements Serializable {
         }
     }
 
+    /**
+     * ApplicationForm Association
+     */
     public Set<ApplicationForm> getApplicationForms() {
         return Collections.unmodifiableSet(applicationForms);
     }
 
-    /**
-     * ApplicationForm Association
-     */
     public void addApplicationForm(ApplicationForm applicationForm) {
         if (applicationForm == null) {
             throw new DataValidationException("Application from is required!");
@@ -313,33 +313,28 @@ public class Guild implements Serializable {
     /**
      * Boost Association
      */
-    public Set<Boost> getGuildBoosts() {
+    public Set<Boost> getBoosts() {
         return Collections.unmodifiableSet(guildBoosts);
     }
 
-    public void addBoost(Boost newBoost) {
-        if (newBoost == null) {
-            throw new DataValidationException("Boost is required!");
+    public void addBoost(Boost boost) {
+        if (boost == null) {
+            throw new DataValidationException("Boost is null!");
         }
-        if (newBoost.getOwner() != this) {
-            throw new DataValidationException("Boost is not related to this Guild!");
+        if (this.guildBoosts.contains(boost)) {
+            return;
         }
-        this.guildBoosts.add(newBoost);
+        this.guildBoosts.add(boost);
+        boost.setOwner(this);
     }
 
-    public void removeGuildBoost(Boost boost) {
+    public void removeBoost(Boost boost) {
         if (!this.guildBoosts.contains(boost)) {
             return;
         }
-        this.guildBoosts.remove(boost);
-        boost.deleteGuild();
-    }
 
-    public void deleteBoost() {
-        List<Boost> copiedBoosts = new ArrayList<>(this.guildBoosts);
-        for (Boost b : copiedBoosts) {
-            b.deleteGuild();
-        }
+        this.guildBoosts.remove(boost);
+        boost.setOwner(null);
     }
 
     /**

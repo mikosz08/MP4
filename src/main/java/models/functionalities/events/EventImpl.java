@@ -2,7 +2,6 @@ package models.functionalities.events;
 
 import models.exception.DataValidationException;
 import models.guild.Guild;
-import models.guild.Log;
 import models.player.Player;
 import models.player.PlayerType;
 
@@ -280,13 +279,13 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
             return;
         }
         this.eventParticipants.remove(player);
-        player.deleteParticipants();
+        player.deleteParticipatedEvent();
     }
 
     public void deleteParticipants() {
         List<Player> copiedEventParticipants = new ArrayList<>(this.eventParticipants);
         for (Player participant : copiedEventParticipants) {
-            participant.deleteParticipants();
+            participant.deleteParticipatedEvent();
         }
     }
 

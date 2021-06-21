@@ -37,8 +37,17 @@ public class MainGUI extends JFrame {
 
     private JPanel southTablePanel;
     private JTextArea logTextArea;
+    private JTextField loggedAS;
 
     public MainGUI() {
+        initFrame();
+
+        //field setup
+
+
+    }
+
+    private void initFrame() {
         setContentPane(mainPanel);
         pack();
         setLocationRelativeTo(null);
@@ -54,5 +63,6 @@ public class MainGUI extends JFrame {
         mainTable.setModel(new DefaultTableModel(null, columnNames));
 
     }
+
 
 }

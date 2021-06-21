@@ -1,9 +1,6 @@
 package models.functionalities.shop;
 
 import models.exception.DataValidationException;
-import models.functionalities.events.EventImpl;
-import models.guild.GuildAchievement;
-import models.guild.Log;
 import models.player.Player;
 
 import java.io.Serializable;
@@ -24,6 +21,8 @@ public class Shop implements Serializable {
         shopsExtent.add(this);
     }
 
+    public static Shop mainShop = new Shop();
+
     /**
      * Boost Association
      */
@@ -31,61 +30,51 @@ public class Shop implements Serializable {
         return Collections.unmodifiableSet(boosts);
     }
 
-    public void addBoost(Boost newBoost) {
-        if (newBoost == null) {
-            throw new DataValidationException("Boost is required!");
+    public void addBoost(Boost boost) {
+        if (boost == null) {
+            throw new DataValidationException("Boost is null!");
         }
-        if (newBoost.getShop() != this) {
-            throw new DataValidationException("Boost is not related to this Guild!");
+        if (this.boosts.contains(boost)) {
+            return;
         }
-        this.boosts.add(newBoost);
+        this.boosts.add(boost);
+        boost.setShop(this);
     }
 
     public void removeBoost(Boost boost) {
         if (!this.boosts.contains(boost)) {
             return;
         }
-        this.boosts.remove(boost);
-        boost.deleteShop();
-    }
 
-    public void deleteBoost() {
-        List<Boost> copiedBoosts = new ArrayList<>(this.boosts);
-        for (Boost b : copiedBoosts) {
-            b.deleteShop();
-        }
+        this.boosts.remove(boost);
+        boost.setShop(null);
     }
 
     /**
      * Player Association
      */
-    public Set<Player> getPlayerList() {
+    public Set<Player> getPlayers() {
         return Collections.unmodifiableSet(playerList);
     }
 
-    public void addPlayer(Player newPlayer) {
-        if (newPlayer == null) {
-            throw new DataValidationException("Player is required!");
+    public void addPlayer(Player player) {
+        if (player == null) {
+            throw new DataValidationException("Player is null!");
         }
-        if (newPlayer.getShop() != this) {
-            throw new DataValidationException("Player is not related to this Guild!");
+        if (this.playerList.contains(player)) {
+            return;
         }
-        this.playerList.add(newPlayer);
+        this.playerList.add(player);
+        player.setShop(this);
     }
 
     public void removePlayer(Player player) {
         if (!this.playerList.contains(player)) {
             return;
         }
-        this.playerList.remove(player);
-        player.deleteShop();
-    }
 
-    public void deletePlayers() {
-        List<Player> copiedPlayerList = new ArrayList<>(this.playerList);
-        for (Player p : copiedPlayerList) {
-            p.deleteShop();
-        }
+        this.playerList.remove(player);
+        player.setShop(null);
     }
 
     /**

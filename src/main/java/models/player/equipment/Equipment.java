@@ -2,8 +2,8 @@ package models.player.equipment;
 
 
 import models.exception.DataValidationException;
-import models.guild.Guild;
-import models.guild.Log;
+
+import models.functionalities.shop.Shop;
 import models.player.Player;
 
 import java.io.Serializable;
@@ -65,24 +65,31 @@ public abstract class Equipment implements Serializable {
     /**
      * Player Association
      */
-    public void delete() {
-        if (this.owner != null) {
-            Player tmpPlayer = this.owner;
-            this.owner = null;
-            tmpPlayer.removeEquipment(this);
-        }
-    }
-
     public Player getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    private void setOwner(Player owner) {
-        if (owner == null) {
-            throw new DataValidationException("Owner is required!");
+    public void setShop(Player owner) {
+
+        if (this.owner == owner) {
+            return;
         }
-        this.owner = owner;
-        owner.addEquipment(this);
+
+        if (this.owner != null) {
+
+            Player tmpOwner = this.owner;
+            this.owner = null;
+            tmpOwner.removeEquipment(this);
+
+            if (owner != null) {
+                this.owner = owner;
+                owner.addEquipment(this);
+            }
+
+        } else {
+            this.owner = owner;
+            owner.addEquipment(this);
+        }
     }
 
     /**

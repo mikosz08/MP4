@@ -102,7 +102,7 @@ public class Region implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("Name: %s", getRegionName());
+        return String.format("Region Name: %s", getRegionName());
     }
 
 }

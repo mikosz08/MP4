@@ -21,11 +21,13 @@ public class Boost implements Serializable {
     private Shop shop;
     private Guild owner;
 
-    public Boost(String boostName, LocalDate durationTo, int reputationBonus, BoostType boostType) {
-        this.boostName = boostName;
-        this.durationTo = durationTo;
-        this.reputationBonus = reputationBonus;
-        this.boostType = boostType;
+    public Boost(String boostName,Guild owner, Shop shop, LocalDate durationTo, int reputationBonus, BoostType boostType) {
+        setBoostName(boostName);
+        setShop(shop);
+        setOwner(owner);
+        setDurationTo(durationTo);
+        setReputationBonus(reputationBonus);
+        setBoostType(boostType);
 
         boostsExtent.add(this);
     }
@@ -101,22 +103,29 @@ public class Boost implements Serializable {
      * Shop Association
      */
     public Shop getShop() {
-        return shop;
+        return this.shop;
     }
 
-    private void setOwner(Shop shop) {
-        if (shop == null) {
-            throw new DataValidationException("Owner is required!");
+    public void setShop(Shop shop) {
+
+        if (this.shop == shop) {
+            return;
         }
-        this.shop = shop;
-        shop.addBoost(this);
-    }
 
-    public void deleteShop() {
         if (this.shop != null) {
+
             Shop tmpShop = this.shop;
             this.shop = null;
             tmpShop.removeBoost(this);
+
+            if (shop != null) {
+                this.shop = shop;
+                shop.addBoost(this);
+            }
+
+        } else {
+            this.shop = shop;
+            shop.addBoost(this);
         }
     }
 
@@ -124,22 +133,29 @@ public class Boost implements Serializable {
      * Guild Association
      */
     public Guild getOwner() {
-        return owner;
+        return this.owner;
     }
 
-    private void setOwner(Guild owner) {
-        if (owner == null) {
-            throw new DataValidationException("Owner is required!");
+    public void setOwner(Guild newOwner) {
+
+        if (this.owner == newOwner) {
+            return;
         }
-        this.owner = owner;
-        owner.addBoost(this);
-    }
 
-    public void deleteGuild() {
         if (this.owner != null) {
+
             Guild tmpOwner = this.owner;
             this.owner = null;
-            tmpOwner.removeGuildBoost(this);
+            tmpOwner.removeBoost(this);
+
+            if (newOwner != null) {
+                this.owner = newOwner;
+                newOwner.addBoost(this);
+            }
+
+        } else {
+            this.owner = newOwner;
+            newOwner.addBoost(this);
         }
     }
 

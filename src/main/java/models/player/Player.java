@@ -3,6 +3,7 @@ package models.player;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
+import models.functionalities.shop.Boost;
 import models.functionalities.shop.Shop;
 import models.guild.Guild;
 import models.player.equipment.Equipment;
@@ -12,6 +13,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static models.functionalities.shop.Shop.mainShop;
 
 public class Player implements Serializable {
 
@@ -47,8 +50,7 @@ public class Player implements Serializable {
     /**
      * Player Constructor
      */
-    public Player(String nickname, int level, PlayerLocation playerLocation,
-                  PlayerType playerType, String playerClass) {
+    public Player(String nickname, int level, PlayerLocation playerLocation, String playerClass) {
         this.id = playerId++;
         setNickname(nickname);
         setLevel(level);
@@ -56,7 +58,8 @@ public class Player implements Serializable {
         setReputationAwarded(STARTING_REP_POINTS);
         setPlayerLocation(playerLocation);
         setDateOfAccession(LocalDate.now());
-        setPlayerType(playerType);
+        setPlayerType(PlayerType.APPLICANT);
+        setShop(mainShop);
         playersExtent.add(this);
     }
 
@@ -389,7 +392,7 @@ public class Player implements Serializable {
         participatedEvent.addEventParticipant(this);
     }
 
-    public void deleteParticipants() {
+    public void deleteParticipatedEvent() {
         if (this.participatedEvent != null) {
             EventImpl tmpEvent = this.participatedEvent;
             this.participatedEvent = null;
@@ -400,54 +403,57 @@ public class Player implements Serializable {
     /**
      * Equipment Association
      */
+    public Set<Equipment> getEquipment() {
+        return Collections.unmodifiableSet(equipment);
+    }
+
     public void addEquipment(Equipment eq) {
         if (eq == null) {
-            throw new DataValidationException("Log is required!");
+            throw new DataValidationException("Boost is null!");
         }
-        if (eq.getOwner() != this) {
-            throw new DataValidationException("Log is not related to this Guild!");
+        if (this.equipment.contains(eq)) {
+            return;
         }
         this.equipment.add(eq);
+        eq.setShop(this);
     }
 
     public void removeEquipment(Equipment eq) {
         if (!this.equipment.contains(eq)) {
             return;
         }
-        this.equipment.remove(eq);
-        eq.delete();
-    }
 
-    public void deleteEquipment() {
-        List<Equipment> copiedEq = new ArrayList<>(this.equipment);
-        for (Equipment eq : copiedEq) {
-            eq.delete();
-        }
+        this.equipment.remove(eq);
+        eq.setShop(null);
     }
 
     /**
      * Shop Association
      */
     public Shop getShop() {
-        return shop;
+        return this.shop;
     }
 
-    private void setOwner(Shop shop) {
-        if (shop == null) {
-            throw new DataValidationException("Owner is required!");
+    public void setShop(Shop newShop) {
+
+        if (this.shop == newShop) {
+            return;
         }
-        this.shop = shop;
-        shop.addPlayer(this);
-    }
 
-    /**
-     * Shop Delete
-     */
-    public void deleteShop() {
         if (this.shop != null) {
+
             Shop tmpShop = this.shop;
             this.shop = null;
             tmpShop.removePlayer(this);
+
+            if (newShop != null) {
+                this.shop = newShop;
+                newShop.addPlayer(this);
+            }
+
+        } else {
+            this.shop = newShop;
+            newShop.addPlayer(this);
         }
     }
 
