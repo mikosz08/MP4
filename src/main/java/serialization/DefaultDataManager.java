@@ -10,11 +10,14 @@ import models.player.PlayerType;
 
 public abstract class DefaultDataManager {
 
-    public static void CreateDefaultGuilds() {
+    public static void CreateDefaultData() {
 
-        Player player1 = new Player("Albert3113", 15, new PlayerLocation("Orgimmar", 35, -51), "Warrior");
+        Player player1 = new Player("Albert3113", 15, new PlayerLocation("Orgrimmar", 35, -51), "Warrior");
         Player player2 = new Player("Gustaw08", 23, new PlayerLocation("Budyenk A", 17, 46), "Archer");
         Player player3 = new Player("AnnKa", 45, new PlayerLocation("Lost City", -45, 51), "Warlock");
+        Player player4 = new Player("MagicAndrew", 60, new PlayerLocation("Torghast", 46, 17), "Druid");
+        Player player5 = new Player("Pavl0", 23, new PlayerLocation("Marsalkovska", -55, -551), "Seaker");
+        Player player6 = new Player("MarcoSolo", 99, new PlayerLocation("Kosyckowa", 8, 6), "Student");
 
         System.out.printf("created players: \n%s \n%s \n%s\n%n", player1, player2, player3);
 
@@ -39,12 +42,18 @@ public abstract class DefaultDataManager {
         player1.becomeGuildFounder();
         player2.becomeGuildFounder();
         player3.becomeGuildFounder();
+        player4.becomeGuildFounder();
+        player5.becomeGuildFounder();
+        player6.becomeGuildFounder();
 
-        Guild guild1 = new Guild("Very Strong Guild", player1, faction2);
-        Guild guild2 = new Guild("Not So Strong Guild", player2, faction1);
-        Guild guild3 = new Guild("Gidlia Española ", player3, faction3);
+        Guild guild1 = new Guild("Very_Strong_Guild", player1, faction2);
+        Guild guild2 = new Guild("Not_So_Strong_Guild", player2, faction1);
+        Guild guild3 = new Guild("Gidlia_Española", player3, faction3);
+        Guild guild4 = new Guild("Starzy_Spokojni", player4, faction3);
+        Guild guild5 = new Guild("Tibia_Klasztor", player5, faction2);
+        Guild guild6 = new Guild("ForSigmar", player6, faction1);
 
-        System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3);
+        System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
 
     }
 

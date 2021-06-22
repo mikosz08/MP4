@@ -66,7 +66,8 @@ public class ExtentManager {
     public static void load() {
         File myObj = new File(EXTENT_FILE_PATH);
         if (!myObj.exists()) {
-            throw new DataValidationException("nothing to load");
+            System.out.println("nothing to load");
+            return;
         }
         loadExtent();
     }

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="syntheticaSimple2D">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/src/lib/syntheticaSimple2D.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -4,17 +4,17 @@ import models.player.Player;
 
 public class Login {
 
-    private Player loggedUser;
+    private static Player loggedUser;
 
     public Login(Player loggedUser) {
         setLoggedUser(loggedUser);
     }
 
-    public Player getLoggedUser() {
+    public static Player getLoggedUser() {
         return loggedUser;
     }
 
-    public void setLoggedUser(Player loggedUser) {
-        this.loggedUser = loggedUser;
+    public static void setLoggedUser(Player loggedUser) {
+        Login.loggedUser = loggedUser;
     }
 }

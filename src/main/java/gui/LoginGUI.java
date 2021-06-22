@@ -11,9 +11,9 @@ public class LoginGUI extends GuiUtilities {
     private JPanel mainLoginPanel;
     private JPanel buttonPanel;
 
-    private JTextField enterYourDataTextField;
-    private JTextField usernameTextField;
+    private JTextField enterPlayerDetailsTextField;
     private JTextField levelTextField;
+    private JTextField usernameTextField;
     private JTextField locationNameTextField;
     private JTextField xTextField;
     private JTextField yTextField;
@@ -32,7 +32,7 @@ public class LoginGUI extends GuiUtilities {
         setContentPane(mainLoginPanel);
         pack();
         setLocationRelativeTo(null);
-        setTitle("Companion");
+        setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(false);
@@ -40,11 +40,11 @@ public class LoginGUI extends GuiUtilities {
 
     private void initFields() {
 
-        levelTextField.addMouseListener(new MouseAdapter() {
+        usernameTextField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                levelTextField.setText("");
+                usernameTextField.setText("");
             }
         });
 
@@ -56,11 +56,11 @@ public class LoginGUI extends GuiUtilities {
             }
         });
 
-        usernameTextField.addMouseListener(new MouseAdapter() {
+        levelTextField.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                usernameTextField.setText("");
+                levelTextField.setText("");
             }
         });
 
@@ -93,11 +93,11 @@ public class LoginGUI extends GuiUtilities {
     private void initButtons(LoginGUI loginGUI) {
 
         Default.addActionListener(e -> {
-            usernameTextField.setText("xXMrPlayerXx");
             levelTextField.setText("17");
+            usernameTextField.setText("xXMrPlayerXx");
             locationNameTextField.setText("Ragefire Chasm");
-            xTextField.setText("19");
-            yTextField.setText("-45");
+            xTextField.setText("198");
+            yTextField.setText("-457");
             classTextField.setText("Student");
         });
 
@@ -106,19 +106,21 @@ public class LoginGUI extends GuiUtilities {
             boolean validated = true;
 
             try {
-                Login user = new Login(new Player(
-                        usernameTextField.getText(),
-                        Integer.parseInt(levelTextField.getText()),
-                        new PlayerLocation(
-                                locationNameTextField.getText(),
-                                Integer.parseInt(xTextField.getText()),
-                                Integer.parseInt(yTextField.getText())
-                        ),
-                        classTextField.getText()
-                ));
-                System.out.printf("Logged as: %s", user.getLoggedUser());
+                Login.setLoggedUser(
+                        new Player(
+                                usernameTextField.getText(),
+                                Integer.parseInt(levelTextField.getText()),
+                                new PlayerLocation(
+                                        locationNameTextField.getText(),
+                                        Integer.parseInt(xTextField.getText()),
+                                        Integer.parseInt(yTextField.getText())
+                                ),
+                                classTextField.getText()
+                        )
+                );
+                System.out.printf("Logged as: %s", Login.getLoggedUser());
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(this, "Wrong Type", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Wrong Format!", "Try Again", JOptionPane.WARNING_MESSAGE);
                 validated = false;
             }
 
