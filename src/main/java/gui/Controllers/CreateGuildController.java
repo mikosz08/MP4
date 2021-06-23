@@ -5,6 +5,7 @@ import gui.Login;
 import models.guild.Faction;
 import models.guild.Guild;
 import models.player.Player;
+import serialization.ExtentManager;
 
 
 public class CreateGuildController {
@@ -24,7 +25,7 @@ public class CreateGuildController {
 
         Login.getLoggedUser().becomeGuildFounder();
         Guild g = new Guild(guildName, owner, faction);
-
+        ExtentManager.save();
         createGuildGUI.dispose();
         return g;
     }

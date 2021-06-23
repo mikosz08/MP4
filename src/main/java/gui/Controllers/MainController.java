@@ -3,6 +3,8 @@ package gui.Controllers;
 import gui.CreateGuildGUI;
 import gui.Login;
 import gui.MainGUI;
+import gui.addAplicantGUI.AddAplicantGUI;
+import gui.applyToGuildGUI.ChooseGuildGUI;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
 import models.player.Player;
@@ -13,9 +15,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
 
 public class MainController {
 
@@ -37,7 +36,7 @@ public class MainController {
         mainTable.setModel(tableModel);
 
         for (Guild g : guilds) {
-
+            // TODO dodać CONST MAX PLAYERS
             tableModel.addRow(new String[]{g.getGuildName(), g.getFounderNickname(), g.getGuildMembers().size()
                     + "/99", String.valueOf(g.getDateOfCreation())});
 
@@ -45,8 +44,9 @@ public class MainController {
 
     }
 
+
+
     /**
-     * //TODO: Check this.
      * Load known guild Members.
      */
     public void loadMembers(JTable mainTable) {
@@ -108,7 +108,9 @@ public class MainController {
         };
     }
 
-    //Remove Guild from existence
+    /**
+     *Remove Guild from existence
+     */
     public void deleteGuild(JTable mainTable, JTextArea guildInfoTextArea) {
 
         if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
@@ -125,6 +127,49 @@ public class MainController {
         loadGuilds(mainTable);
         showGuildInfo(guildInfoTextArea);
         ExtentManager.save();
+    }
+
+    /**
+     *Apply To Guild
+     * @param mainGUI
+     */
+    public void applyToGuild(MainGUI mainGUI) {
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.APPLICANT) {
+            JOptionPane.showMessageDialog(null, "You already have a guild!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        EventQueue.invokeLater(() -> new ChooseGuildGUI(mainGUI));
+        mainGUI.setEnabled(false);
+    }
+
+    /**
+     * Load guild Applicants.
+     */
+    public void showAddApplicantDialog(MainGUI mainGUI) {
+        if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT || Login.getLoggedUser().getPlayerType() == PlayerType.GUILD_MEMBER) {
+            JOptionPane.showMessageDialog(null, "You need permission to do that!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        EventQueue.invokeLater(() -> new AddAplicantGUI(mainGUI));
+        mainGUI.setEnabled(false);
+    }
+
+    /**
+     * Load guild Applicants.
+     */
+    public void loadApplicants(JTable applicantsTable) {
+
+        ApplicationForm[] applicationForms = Login.getLoggedUser().getGuild().getApplicationForms().toArray(new ApplicationForm[0]);
+        String[] columnNames = {"From"};
+        changeTableModel(columnNames);
+
+        applicantsTable.setModel(tableModel);
+        for (ApplicationForm ap : applicationForms) {
+            tableModel.addRow(new String[]{ap.getPlayer().getNickname()});
+        }
+
     }
 
     public void showGuildInfo(Guild info, JTextArea guildInfoTextArea) {
@@ -149,4 +194,7 @@ public class MainController {
                                 "Created At: ---\n")
         );
     }
+
+
+
 }

@@ -146,6 +146,11 @@ public class Guild implements Serializable {
         if (this.guildMembers.contains(newMember)) {
             return;
         }
+
+        if(newMember.getPlayerType() != PlayerType.GUILD_FOUNDER){
+            newMember.becomeGuildMember();
+        }
+
         this.guildMembers.add(newMember);
         newMember.setGuild(this);
     }
@@ -377,7 +382,7 @@ public class Guild implements Serializable {
 
         //delete applications
         for (ApplicationForm ap : getApplicationForms()) {
-            removeApplicationForm(ap);
+            ap.delete();
         }
 
         //delete faction

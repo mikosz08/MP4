@@ -4,8 +4,6 @@ import gui.Controllers.MainController;
 import models.guild.Guild;
 
 import javax.swing.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 
 public class MainGUI extends JFrame {
@@ -43,6 +41,7 @@ public class MainGUI extends JFrame {
     private JPanel southTablePanel;
     private JTextArea logTextArea;
     private JTextField loggedAsTextField;
+    private JButton leaveGuildButton;
 
     MainController mainController;
 
@@ -97,6 +96,15 @@ public class MainGUI extends JFrame {
         //Delete Guild Button
         deleteGuildButton.addActionListener(e -> {
             mainController.deleteGuild(mainTable, guildInfoTextArea);
+        });
+
+        //Apply To Guild Button
+        applyToGuildButton.addActionListener(e -> {
+            mainController.applyToGuild(this);
+        });
+
+        addApplicantButton.addActionListener(e -> {
+            mainController.showAddApplicantDialog(this);
         });
 
     }

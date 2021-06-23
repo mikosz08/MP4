@@ -11,12 +11,22 @@ public abstract class DefaultDataManager {
 
     public static void CreateDefaultData() {
 
+        Player player = new Player("s18333", 23, new PlayerLocation("Void", 123, -123), "Student");
+
+
         Player player1 = new Player("Albert3113", 15, new PlayerLocation("Orgrimmar", 35, -51), "Warrior");
         Player player2 = new Player("Gustaw08", 23, new PlayerLocation("Budyenk A", 17, 46), "Archer");
         Player player3 = new Player("AnnKa", 45, new PlayerLocation("Lost City", -45, 51), "Warlock");
         Player player4 = new Player("MagicAndrew", 60, new PlayerLocation("Torghast", 46, 17), "Druid");
         Player player5 = new Player("Pavl0", 23, new PlayerLocation("Marsalkovska", -55, -551), "Seaker");
-        Player player6 = new Player("MarcoSolo", 99, new PlayerLocation("Kosyckowa", 8, 6), "Student");
+        Player player6 = new Player("MarcoSolo", 99, new PlayerLocation("Kosyckowa", 8, 6), "Mage");
+
+        Player player7 = new Player("Falko", 75, new PlayerLocation("Auberdine", 35, -51), "Mage");
+        Player player8 = new Player("Asiup", 53, new PlayerLocation("Dalaran", 17, 46), "Monk");
+        Player player9 = new Player("Oddray", 43, new PlayerLocation("Dolanaar", -45, 51), "Warlock");
+        Player player10 = new Player("Herilland", 60, new PlayerLocation("Goldshire", 46, 17), "Druid");
+        Player player11 = new Player("Jenean", 22, new PlayerLocation("Kharanos", -55, -551), "Demon Hunter");
+        Player player12 = new Player("Pedro", 93, new PlayerLocation("Lakeshire", 8, 6), "Death Knight");
 
         System.out.printf("created players: \n%s \n%s \n%s\n%n", player1, player2, player3);
 
@@ -51,6 +61,13 @@ public abstract class DefaultDataManager {
         Guild guild4 = new Guild("Starzy_Spokojni", player4, faction3);
         Guild guild5 = new Guild("Tibia_Klasztor", player5, faction2);
         Guild guild6 = new Guild("ForSigmar", player6, faction1);
+
+        guild1.addGuildMember(player7);
+        guild1.addGuildMember(player8);
+        guild3.addGuildMember(player9);
+        guild6.addGuildMember(player10);
+        guild6.addGuildMember(player11);
+        guild6.addGuildMember(player12);
 
         System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
 

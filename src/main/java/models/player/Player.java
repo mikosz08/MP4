@@ -357,7 +357,6 @@ public class Player implements Serializable {
 
     }
 
-
     /**
      * Event Creation Association
      */

@@ -34,11 +34,14 @@ public class ApplicationForm implements Serializable {
         setGuild(guild);
         setPlayer(player);
 
-        if (!isUnique()) {
+        /*if (!isUnique()) {
             throw new DataValidationException("Duplicated ApplicationForm!");
-        }
+        }*/
 
-        applicationFormExtent.add(this);
+        List<ApplicationForm> copiedExtent = new ArrayList<>(applicationFormExtent);
+        copiedExtent.add(this);
+        setApplicationFormExtent(copiedExtent);
+
     }
 
     /**
@@ -57,7 +60,7 @@ public class ApplicationForm implements Serializable {
 
     public void setMessageContent(String messageContent) {
         if (messageContent == null) {
-            throw new DataValidationException("Message is required!");
+            this.messageContent = "-";
         }
         this.messageContent = messageContent;
     }
@@ -127,7 +130,9 @@ public class ApplicationForm implements Serializable {
             this.player = null;
             tmpPlayer.removeApplicationForm(this);
         }
-        applicationFormExtent.remove(this);
+        List<ApplicationForm> copiedExtent = new ArrayList<>(ApplicationForm.getApplicationFormsExtent());
+        copiedExtent.remove(this);
+        ApplicationForm.setApplicationFormExtent(copiedExtent);
     }
 
     /**

@@ -4,7 +4,6 @@ import gui.Controllers.CreateGuildController;
 import gui.Controllers.MainController;
 import models.guild.Faction;
 import models.guild.Guild;
-import serialization.ExtentManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +39,7 @@ public class CreateGuildGUI extends JDialog {
         pack();
         setLocationRelativeTo(null);
         setTitle("Create Guild");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);
         setResizable(false);
     }
@@ -54,7 +53,7 @@ public class CreateGuildGUI extends JDialog {
                 Guild info = createGuildController.createGuild(guildNameTextField.getText(), (String) factionComboBox.getSelectedItem(), this);
                 mainController.showGuildInfo(info, guildInfoTextArea);
                 mainController.loadGuilds(mainTable);
-                ExtentManager.save();
+                //ExtentManager.save();
             }
         });
 
@@ -70,13 +69,16 @@ public class CreateGuildGUI extends JDialog {
             }
         });
 
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                mainGUI.setEnabled(true);
+                dispose();
+            }
+        });
+
     }
 
     private void initComponents() {
-        guildNameInfoTextField.setBackground(new JButton().getBackground());
-
-        factionInfoTextField.setBackground(new JButton().getBackground());
-
         for (Faction f : Faction.getFactionsExtent()) {
             factionComboBox.addItem(f.getFactionName());
         }
