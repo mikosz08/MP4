@@ -1,12 +1,11 @@
 package gui;
 
+import gui.Controllers.MainController;
 import models.guild.Guild;
-import models.player.Player;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import static java.util.Optional.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 
 public class MainGUI extends JFrame {
@@ -45,37 +44,27 @@ public class MainGUI extends JFrame {
     private JTextArea logTextArea;
     private JTextField loggedAsTextField;
 
-    DefaultTableModel tableModel;
+    MainController mainController;
 
     public MainGUI() {
+        mainController = new MainController();
 
         initFrame();
-
-        initComponents();
-
         initButtons();
 
-        loadGuilds();
-        showLoggedPlayerInfo();
+        mainController.loadGuilds(mainTable);
+        mainController.showLoggedPlayerInfo(loggedAsTextField);
+
+        Guild guild = Login.getLoggedUser().getGuild();
+        if (guild != null) {
+            mainController.showGuildInfo(guild, guildInfoTextArea);
+        }
 
     }
 
-    private void initComponents() {
-
-    }
-
-    private void initButtons() {
-
-        guildsButton.addActionListener(e -> {
-            loadGuilds();
-        });
-
-        membersButton.addActionListener(e -> {
-            loadMembers();
-        });
-
-    }
-
+    /**
+     * Initialize MainFrame.
+     */
     private void initFrame() {
         setContentPane(mainPanel);
         pack();
@@ -86,69 +75,30 @@ public class MainGUI extends JFrame {
         setResizable(false);
     }
 
-    /**
-     * Load known Guilds.
-     */
-    private void loadGuilds() {
+    private void initButtons() {
 
-        Guild[] guilds = Guild.getGuildsExtent().toArray(new Guild[0]);
-        String[] columnNames = {"Guild Name", "Founder", "Members", "Created At"};
-        changeTableModel(columnNames);
+        //Show Guilds Button
+        guildsButton.addActionListener(e -> {
+            mainController.loadGuilds(mainTable);
+        });
 
-        mainTable.setModel(tableModel);
 
-        for (Guild g : guilds) {
+        //Show guild Members Button
+        membersButton.addActionListener(e -> {
+            mainController.loadMembers(mainTable);
+        });
 
-            tableModel.addRow(new String[]{g.getGuildName(), g.getFounderNickname(), g.getGuildMembers().size()
-                    + "/99", String.valueOf(g.getDateOfCreation())});
 
-        }
+        //Create Guild Button
+        createGuildButton.addActionListener(e -> {
+            mainController.showCreateGuildDialog(this, guildInfoTextArea, mainTable);
+        });
 
-    }
+        //Delete Guild Button
+        deleteGuildButton.addActionListener(e -> {
+            mainController.deleteGuild(mainTable, guildInfoTextArea);
+        });
 
-    /** //TODO
-     * Load known guild Members.
-     */
-    private void loadMembers() {
-
-        if (Login.getLoggedUser().getGuild() == null) {
-            JOptionPane.showMessageDialog(null, "You don't have a Guild!", "Info",
-                    JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        Player[] players = Login.getLoggedUser().getGuild().getGuildMembers().toArray(new Player[0]);
-        String[] columnNames = {"Nickname", "Level", "Day Message", "Awarded Rep", "Rank"};
-        changeTableModel(columnNames);
-
-        mainTable.setModel(tableModel);
-
-        for (Player p : players) {
-
-            tableModel.addRow(new String[]{p.getNickname(), String.valueOf(p.getLevel()),
-                    String.valueOf(of(p.getMessageOfTheDay()).orElse(empty())),
-                    String.valueOf(p.getReputationAwarded()), String.valueOf(p.getPlayerType())});
-
-        }
-
-    }
-
-    /**
-     * Show info about currently logged user.
-     */
-    private void showLoggedPlayerInfo() {
-        loggedAsTextField.setText(Login.getLoggedUser().getNickname());
-    }
-
-    /**
-     * Change Current JTable Model to show different data.
-     */
-    private void changeTableModel(String[] columnNames) {
-        tableModel = new DefaultTableModel(columnNames, 0) {
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
     }
 
 }

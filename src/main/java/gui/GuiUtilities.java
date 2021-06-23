@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-public abstract class GuiUtilities extends JFrame {
+public abstract class GuiUtilities extends JDialog {
 
     public void OnExit(JFrame frame){
         System.out.println("exit");

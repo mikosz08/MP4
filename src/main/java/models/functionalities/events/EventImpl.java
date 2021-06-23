@@ -228,7 +228,7 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
     }
 
     /**
-     * Event Organizer
+     * Guild Association
      */
     public Guild getOrganizer() {
         return organizer;

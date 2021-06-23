@@ -24,7 +24,7 @@ public class PlayerTest {
         //testEQ();
     }
 
-/*    private static void testEQ() {
+    private static void testEQ() {
 
         Stats stats = new Stats(1, 2, 3);
 
@@ -42,7 +42,7 @@ public class PlayerTest {
 
     private static void testEventCreation() {
 
-        Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
+        /*Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
         Player player2 = new Player("mikosz02", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
         Player player3 = new Player("mikosz03", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
 
@@ -61,14 +61,14 @@ public class PlayerTest {
         EventImpl event = new EventImpl(guild1, player1, "event", LocalDate.now(), LocalDate.now(),
                 1, 1, 1, EnumSet.of(EventType.EXP_EVENT, EventType.GOLD_EVENT, EventType.REP_EVENT));
 
-        System.out.println(event);
+        System.out.println(event);*/
 
     }
 
     private static void serializationTest() {
-        Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
-        Player player2 = new Player("mikosz02", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
-        Player player3 = new Player("mikosz03", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
+        Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), "Warrior");
+        Player player2 = new Player("mikosz02", 15, new PlayerLocation("Here", 15, 41), "Warrior");
+        Player player3 = new Player("mikosz03", 15, new PlayerLocation("Here", 15, 41), "Warrior");
 
         Leader leader1 = new Leader("Thrash");
         Leader leader2 = new Leader("Azmodan");
@@ -155,7 +155,7 @@ public class PlayerTest {
 
     private static void testApplicationForm() {
 
-        Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
+        /*Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
         Player player2 = new Player("mikosz02", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
 
         Leader leader2 = new Leader("Azmodan");
@@ -168,14 +168,14 @@ public class PlayerTest {
         Guild guild1 = new Guild("CNO", player1, faction2);
 
         ApplicationForm ap = new ApplicationForm("message", guild1, player1);
-        System.out.println(ap);
+        System.out.println(ap);*/
 
 
     }
 
     private static void testGuildAchievement() {
 
-        Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
+        /*Player player1 = new Player("mikosz01", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
         Player player2 = new Player("mikosz02", 15, new PlayerLocation("Here", 15, 41), PlayerType.GUILD_MEMBER, "Warrior");
 
         Leader leader2 = new Leader("Azmodan");
@@ -191,9 +191,9 @@ public class PlayerTest {
         System.out.println(ga);
 
         Log log = new Log("message", guild1);
-        System.out.println(log);
+        System.out.println(log);*/
 
 
-    }*/
+    }
 
 }

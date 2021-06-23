@@ -1,5 +1,6 @@
 
 import gui.LoginGUI;
+import models.player.Player;
 import serialization.DefaultDataManager;
 import serialization.ExtentManager;
 
@@ -10,9 +11,9 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
 
-            ExtentManager.load();
+        ExtentManager.load();
 
-        initDefaultData();
+        //initDefaultData();
 
         setLookAndFeel();
 

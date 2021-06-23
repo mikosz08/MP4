@@ -1,5 +1,6 @@
 package models.guild;
 
+import gui.Login;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
@@ -15,8 +16,8 @@ public class Guild implements Serializable {
 
     private static List<Guild> guildsExtent = new ArrayList<>();
 
-    private final String guildName;
-    private final LocalDate dateOfCreation;
+    private String guildName;
+    private LocalDate dateOfCreation;
 
     private Faction guildFaction;
 
@@ -50,14 +51,16 @@ public class Guild implements Serializable {
         if (guildFounder.getPlayerType() != PlayerType.GUILD_FOUNDER) {
             throw new DataValidationException("wrong player type!");
         }
-        this.guildName = guildName;
+        setGuildName(guildName);
         this.dateOfCreation = LocalDate.now();
         setReputationPoints(STARTING_REP_POINTS);
         setFounderNickname(guildFounder.getNickname());
         setFaction(faction);
         addGuildMember(guildFounder);
 
-        guildsExtent.add(this);
+        List<Guild> copiedExtent = new ArrayList<>(guildsExtent);
+        copiedExtent.add(this);
+        setGuildExtent(copiedExtent);
     }
 
     /**
@@ -84,6 +87,13 @@ public class Guild implements Serializable {
      */
     public String getGuildName() {
         return guildName;
+    }
+
+    public void setGuildName(String guildName) {
+        if (guildName == null || guildName.trim().isBlank()) {
+            throw new DataValidationException("Guild needs a Name!");
+        }
+        this.guildName = guildName;
     }
 
     /**
@@ -115,7 +125,7 @@ public class Guild implements Serializable {
     }
 
     public void setFounderNickname(String founderNickname) {
-        if (founderNickname != null && founderNickname.trim().isBlank()) {
+        if (founderNickname == null || founderNickname.trim().isBlank()) {
             throw new DataValidationException("founder nick cannot be empty");
         }
         this.founderNickname = founderNickname;
@@ -144,9 +154,10 @@ public class Guild implements Serializable {
         if (!this.guildMembers.contains(guildMember)) {
             return;
         }
-        if (this.guildMembers.size() == 1) {
+        //to sprawdzenie będzie w guziku do usuwania memberów
+        /*if (this.guildMembers.size() == 1) {
             throw new DataValidationException("Cannot remove last guild member!");
-        }
+        }*/
         this.guildMembers.remove(guildMember);
         guildMember.setGuild(null);
 
@@ -164,7 +175,16 @@ public class Guild implements Serializable {
         return this.guildFaction;
     }
 
-    public void setFaction(Faction newFaction) {
+    public void setFaction(Faction faction) {
+        if (faction == null) {
+            throw new DataValidationException("Faction is required!");
+        }
+        this.guildFaction = faction;
+        faction.addGuild(this);
+    }
+
+    //tutaj mozna znullować ;/
+    /*public void setFaction(Faction newFaction) {
 
         if (this.guildFaction == newFaction) {
             return;
@@ -185,7 +205,7 @@ public class Guild implements Serializable {
             this.guildFaction = newFaction;
             newFaction.addGuild(this);
         }
-    }
+    }*/
 
     /**
      * ApplicationForm Association
@@ -289,6 +309,17 @@ public class Guild implements Serializable {
     /**
      * Event Association
      */
+    public Set<EventImpl> getGuildEvents() {
+        return Collections.unmodifiableSet(guildEvents);
+    }
+
+    public void setGuildEvents(Set<EventImpl> guildEvents) {
+        if (guildEvents == null) {
+            throw new DataValidationException("Event cannot be null!");
+        }
+        this.guildEvents = guildEvents;
+    }
+
     public void addEvent(EventImpl eventOrganization) {
         if (eventOrganization == null) {
             throw new DataValidationException("Event is required!");
@@ -337,6 +368,38 @@ public class Guild implements Serializable {
         boost.setOwner(null);
     }
 
+    public void deleteGuild() {
+
+        //delete members
+        for (Player member : getGuildMembers()) {
+            member.abandonGuild();
+        }
+
+        //delete applications
+        for (ApplicationForm ap : getApplicationForms()) {
+            removeApplicationForm(ap);
+        }
+
+        //delete faction
+        getFaction().removeGuild(this);
+        //delete achievements
+        deleteAchievements();
+        //delete logs
+        deleteLogs();
+
+        //delete boost
+        for (Boost boost : getBoosts()) {
+            removeBoost(boost);
+        }
+
+        if(getGuildsExtent().contains(this)){
+            List<Guild> copiedExtent = new ArrayList<>(guildsExtent);
+            copiedExtent.remove(this);
+            setGuildExtent(copiedExtent);
+        }
+
+    }
+
     /**
      * Utilities
      */
@@ -344,19 +407,6 @@ public class Guild implements Serializable {
     public String toString() {
         return String.format("Name: %s, Founder: %s, Created: %s, Members: %d/99, Faction: %s",
                 getGuildName(), getFounderNickname(), getDateOfCreation(), getGuildMembers().size(), getFaction());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Guild guild = (Guild) o;
-        return Float.compare(guild.reputationPoints, reputationPoints) == 0
-                && guildName.equals(guild.guildName)
-                && dateOfCreation.equals(guild.dateOfCreation)
-                && founderNickname.equals(guild.founderNickname)
-                && guildMembers.equals(guild.guildMembers)
-                && guildFaction.equals(guild.guildFaction);
     }
 
     @Override

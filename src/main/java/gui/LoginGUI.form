@@ -2,128 +2,50 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.LoginGUI">
   <grid id="27dc6" binding="mainLoginPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="278" height="191"/>
+      <xy x="20" y="20" width="236" height="112"/>
     </constraints>
     <properties/>
-    <border type="none"/>
+    <border type="etched" title="&quot;Who are You?"/>
     <children>
-      <grid id="ed2ee" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="95552" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
-        <border type="etched" title="Who are you?"/>
+        <border type="none"/>
         <children>
-          <component id="fcb63" class="javax.swing.JTextField" binding="enterPlayerDetailsTextField" default-binding="true">
+          <grid id="1b1f7" binding="northPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="North"/>
-            <properties>
-              <background color="-3746836"/>
-              <editable value="false"/>
-              <enabled value="true"/>
-              <foreground color="-16708326"/>
-              <margin top="2" left="2" bottom="2" right="2"/>
-              <maximumSize width="120" height="26"/>
-              <minimumSize width="120" height="26"/>
-              <preferredSize width="120" height="30"/>
-              <text value="Enter player details. "/>
-            </properties>
-          </component>
-          <grid id="541ef" layout-manager="BorderLayout" hgap="0" vgap="0">
-            <constraints border-constraint="Center"/>
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="1aed9" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints border-constraint="Center"/>
-                <properties>
-                  <preferredSize width="215" height="92"/>
-                </properties>
-                <border type="none"/>
-                <children>
-                  <component id="7649a" class="javax.swing.JTextField" binding="levelTextField">
-                    <constraints border-constraint="Center"/>
-                    <properties>
-                      <maximumSize width="15" height="26"/>
-                      <minimumSize width="15" height="26"/>
-                      <preferredSize width="15" height="26"/>
-                      <text value="Level"/>
-                    </properties>
-                  </component>
-                  <component id="aa580" class="javax.swing.JTextField" binding="usernameTextField">
-                    <constraints border-constraint="North"/>
-                    <properties>
-                      <maximumSize width="120" height="26"/>
-                      <minimumSize width="120" height="26"/>
-                      <preferredSize width="120" height="26"/>
-                      <text value="User Name"/>
-                    </properties>
-                  </component>
-                  <grid id="95e6a" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
-                    <constraints border-constraint="South"/>
-                    <properties>
-                      <preferredSize width="225" height="40"/>
-                    </properties>
-                    <border type="none"/>
-                    <children>
-                      <component id="814ef" class="javax.swing.JTextField" binding="locationNameTextField" default-binding="true">
-                        <constraints/>
-                        <properties>
-                          <maximumSize width="120" height="26"/>
-                          <minimumSize width="120" height="26"/>
-                          <preferredSize width="120" height="26"/>
-                          <text value="Location Name"/>
-                        </properties>
-                      </component>
-                      <component id="e6241" class="javax.swing.JTextField" binding="xTextField" default-binding="true">
-                        <constraints/>
-                        <properties>
-                          <maximumSize width="40" height="30"/>
-                          <minimumSize width="40" height="30"/>
-                          <preferredSize width="40" height="30"/>
-                          <text value=" x"/>
-                        </properties>
-                      </component>
-                      <component id="70764" class="javax.swing.JTextField" binding="yTextField" default-binding="true">
-                        <constraints/>
-                        <properties>
-                          <maximumSize width="40" height="30"/>
-                          <minimumSize width="40" height="30"/>
-                          <preferredSize width="40" height="30"/>
-                          <text value=" y"/>
-                        </properties>
-                      </component>
-                    </children>
-                  </grid>
-                  <component id="1e5ce" class="javax.swing.JTextField" binding="classTextField" default-binding="true">
-                    <constraints border-constraint="West"/>
-                    <properties>
-                      <maximumSize width="120" height="26"/>
-                      <minimumSize width="120" height="26"/>
-                      <preferredSize width="120" height="26"/>
-                      <text value="Class"/>
-                    </properties>
-                  </component>
-                </children>
-              </grid>
-            </children>
-          </grid>
-          <grid id="9993" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints border-constraint="South"/>
-            <properties/>
-            <border type="etched"/>
-            <children>
-              <component id="83778" class="javax.swing.JButton" binding="Default">
+              <component id="715b8" class="javax.swing.JTextField" binding="usernameTextField">
                 <constraints/>
                 <properties>
-                  <text value="Default"/>
-                </properties>
-              </component>
-              <component id="54b24" class="javax.swing.JButton" binding="Submit">
-                <constraints/>
-                <properties>
-                  <text value="Submit"/>
+                  <preferredSize width="100" height="26"/>
+                  <text value="Username"/>
                 </properties>
               </component>
             </children>
           </grid>
+        </children>
+      </grid>
+      <grid id="955a8" binding="southPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="etched"/>
+        <children>
+          <component id="18c75" class="javax.swing.JButton" binding="Default">
+            <constraints/>
+            <properties>
+              <text value="Default"/>
+              <toolTipText value="Load default data."/>
+            </properties>
+          </component>
+          <component id="282fa" class="javax.swing.JButton" binding="Submit">
+            <constraints/>
+            <properties>
+              <text value="Submit"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

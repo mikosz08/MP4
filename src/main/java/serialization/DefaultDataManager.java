@@ -6,7 +6,6 @@ import models.guild.Leader;
 import models.guild.Region;
 import models.player.Player;
 import models.player.PlayerLocation;
-import models.player.PlayerType;
 
 public abstract class DefaultDataManager {
 

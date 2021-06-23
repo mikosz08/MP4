@@ -30,7 +30,7 @@ public class Log implements Serializable {
     }
 
     public void setMessage(String message) {
-        if (message != null && message.trim().isBlank()) {
+        if (message == null || message.trim().isBlank()) {
             throw new DataValidationException("message cannot be empty");
         }
         this.message = message;

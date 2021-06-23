@@ -3,7 +3,6 @@ package models.player;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
-import models.functionalities.shop.Boost;
 import models.functionalities.shop.Shop;
 import models.guild.Guild;
 import models.player.equipment.Equipment;
@@ -149,7 +148,7 @@ public class Player implements Serializable {
     }
 
     public void setMessageOfTheDay(String messageOfTheDay) {
-        if (messageOfTheDay != null && messageOfTheDay.trim().isBlank()) {
+        if (messageOfTheDay == null || messageOfTheDay.trim().isBlank()) {
             throw new DataValidationException("Message cannot be empty!");
         }
         this.messageOfTheDay = messageOfTheDay;
@@ -166,7 +165,7 @@ public class Player implements Serializable {
         if (playerType != PlayerType.GUILD_FOUNDER) {
             throw new DataValidationException("Only guild founder can set the sentence!");
         }
-        if (sentenceOfTheDay != null && sentenceOfTheDay.trim().isBlank()) {
+        if (sentenceOfTheDay == null || sentenceOfTheDay.trim().isBlank()) {
             throw new DataValidationException("Sentence cannot be empty!");
         }
         this.sentenceOfTheDay = sentenceOfTheDay;
@@ -316,6 +315,11 @@ public class Player implements Serializable {
             this.memberGuild = newGuild;
             newGuild.addGuildMember(this);
         }
+
+        if (newGuild == null) {
+            this.becomeGuildApplicant();
+        }
+
     }
 
     /**
@@ -353,9 +357,14 @@ public class Player implements Serializable {
 
     }
 
+
     /**
      * Event Creation Association
      */
+    public Set<EventImpl> getPlayerCreatedEvents() {
+        return Collections.unmodifiableSet(playerCreatedEvents);
+    }
+
     public void addEvent(EventImpl eventToCreate) {
         if (eventToCreate == null) {
             throw new DataValidationException("Event is required!");
@@ -457,10 +466,30 @@ public class Player implements Serializable {
         }
     }
 
+    public void abandonGuild() {
+
+        //every player should now be an applicant
+        setPlayerType(PlayerType.APPLICANT);
+
+        //delete participated event
+        if (participatedEvent != null) {
+            participatedEvent.removeEventParticipant(this);
+        }
+
+        //delete created events
+        for (EventImpl event : getPlayerCreatedEvents()) {
+            removeEvent(event);
+        }
+
+        //delete guild
+        setGuild(null);
+
+    }
+
     /**
      * Utilities
      */
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -475,7 +504,7 @@ public class Player implements Serializable {
                 && playerLocation.equals(player.playerLocation)
                 && dateOfAccession.equals(player.dateOfAccession)
                 && playerType == player.playerType;
-    }
+    }*/
 
     @Override
     public int hashCode() {

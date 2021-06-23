@@ -153,7 +153,6 @@ public class Faction implements Serializable {
         if (!this.guilds.contains(guild)) {
             return;
         }
-
         this.guilds.remove(guild);
         guild.setFaction(null);
     }
