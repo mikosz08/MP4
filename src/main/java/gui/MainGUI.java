@@ -4,6 +4,8 @@ import gui.Controllers.MainController;
 import models.guild.Guild;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class MainGUI extends JFrame {
@@ -59,6 +61,7 @@ public class MainGUI extends JFrame {
             mainController.showGuildInfo(guild, guildInfoTextArea);
         }
 
+
     }
 
     /**
@@ -81,12 +84,10 @@ public class MainGUI extends JFrame {
             mainController.loadGuilds(mainTable);
         });
 
-
         //Show guild Members Button
         membersButton.addActionListener(e -> {
             mainController.loadMembers(mainTable);
         });
-
 
         //Create Guild Button
         createGuildButton.addActionListener(e -> {
@@ -100,12 +101,16 @@ public class MainGUI extends JFrame {
 
         //Apply To Guild Button
         applyToGuildButton.addActionListener(e -> {
-            mainController.applyToGuild(this);
+            mainController.showChooseGuildDialog(this);
         });
 
+        //Add Applicant Button
         addApplicantButton.addActionListener(e -> {
             mainController.showAddApplicantDialog(this);
         });
+
+        //Remove Application Button
+        removeApplicationButton.addActionListener(e -> mainController.showRemoveApplicationDialog(this));
 
     }
 

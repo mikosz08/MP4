@@ -3,8 +3,9 @@ package gui.Controllers;
 import gui.CreateGuildGUI;
 import gui.Login;
 import gui.MainGUI;
+import gui.RemoveApplication.ChooseGuildApplicationsGUI;
 import gui.addAplicantGUI.AddAplicantGUI;
-import gui.applyToGuildGUI.ChooseGuildGUI;
+import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
 import models.player.Player;
@@ -31,7 +32,7 @@ public class MainController {
 
         Guild[] guilds = Guild.getGuildsExtent().toArray(new Guild[0]);
         String[] columnNames = {"Guild Name", "Founder", "Members", "Created At"};
-        changeTableModel(columnNames);
+        changeModel(columnNames);
 
         mainTable.setModel(tableModel);
 
@@ -43,8 +44,6 @@ public class MainController {
         }
 
     }
-
-
 
     /**
      * Load known guild Members.
@@ -59,17 +58,34 @@ public class MainController {
 
         Player[] players = Login.getLoggedUser().getGuild().getGuildMembers().toArray(new Player[0]);
         String[] columnNames = {"Nickname", "Level", "Day Message", "Awarded Rep", "Rank"};
-        changeTableModel(columnNames);
+        changeModel(columnNames);
 
         mainTable.setModel(tableModel);
 
         for (Player p : players) {
 
             tableModel.addRow(new String[]{p.getNickname(), String.valueOf(p.getLevel()),
-                    String.valueOf(p.getMessageOfTheDay().orElse("-")),
+                    p.getMessageOfTheDay().orElse("-"),
                     String.valueOf(p.getReputationAwarded()), String.valueOf(p.getPlayerType())});
 
         }
+    }
+
+    public void loadApplications(JTable table, Guild choosedGuild) {
+
+        String[] columnNames = {"Your Applications", "Message"};
+        changeModel(columnNames);
+        table.setModel(tableModel);
+
+        for (ApplicationForm ap : choosedGuild.getApplicationForms()) {
+
+            tableModel.addRow(new String[]{
+                    "Send at: " + ap.getMessagePostDate(),
+                    ap.getMessageContent()
+            });
+
+        }
+
     }
 
     /**
@@ -100,7 +116,7 @@ public class MainController {
     /**
      * Change Current JTable Model to show different data.
      */
-    public void changeTableModel(String[] columnNames) {
+    public void changeModel(String[] columnNames) {
         tableModel = new DefaultTableModel(columnNames, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -109,7 +125,7 @@ public class MainController {
     }
 
     /**
-     *Remove Guild from existence
+     * Remove Guild from existence
      */
     public void deleteGuild(JTable mainTable, JTextArea guildInfoTextArea) {
 
@@ -130,21 +146,22 @@ public class MainController {
     }
 
     /**
-     *Apply To Guild
+     * Apply To Guild
+     *
      * @param mainGUI
      */
-    public void applyToGuild(MainGUI mainGUI) {
+    public void showChooseGuildDialog(MainGUI mainGUI) {
         if (Login.getLoggedUser().getPlayerType() != PlayerType.APPLICANT) {
             JOptionPane.showMessageDialog(null, "You already have a guild!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        EventQueue.invokeLater(() -> new ChooseGuildGUI(mainGUI));
+        EventQueue.invokeLater(() -> new ChooseGuildToApplyGUI(mainGUI));
         mainGUI.setEnabled(false);
     }
 
     /**
-     * Load guild Applicants.
+     * Load dialog with Guild applicants.
      */
     public void showAddApplicantDialog(MainGUI mainGUI) {
         if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT || Login.getLoggedUser().getPlayerType() == PlayerType.GUILD_MEMBER) {
@@ -163,13 +180,30 @@ public class MainController {
 
         ApplicationForm[] applicationForms = Login.getLoggedUser().getGuild().getApplicationForms().toArray(new ApplicationForm[0]);
         String[] columnNames = {"From"};
-        changeTableModel(columnNames);
+        changeModel(columnNames);
 
         applicantsTable.setModel(tableModel);
         for (ApplicationForm ap : applicationForms) {
             tableModel.addRow(new String[]{ap.getPlayer().getNickname()});
         }
 
+    }
+
+    /**
+     * Load Dialog to select the guild from which you want to remove the application.
+     *
+     * @param mainGUI
+     */
+    public void showRemoveApplicationDialog(MainGUI mainGUI) {
+
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.APPLICANT) {
+            JOptionPane.showMessageDialog(null, "You can't do that right now!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        mainGUI.setEnabled(false);
+        EventQueue.invokeLater(() -> new ChooseGuildApplicationsGUI(mainGUI));
     }
 
     public void showGuildInfo(Guild info, JTextArea guildInfoTextArea) {
@@ -189,12 +223,9 @@ public class MainController {
 
         guildInfoTextArea.setText(
                 String.format("GUILD INFO\n" +
-                                "Name: ---\n" +
-                                "Faction: ---\n" +
-                                "Created At: ---\n")
+                        "Name: ---\n" +
+                        "Faction: ---\n" +
+                        "Created At: ---\n")
         );
     }
-
-
-
 }

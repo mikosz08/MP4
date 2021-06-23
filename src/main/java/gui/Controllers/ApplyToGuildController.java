@@ -3,7 +3,7 @@ package gui.Controllers;
 import gui.Login;
 import gui.MainGUI;
 import gui.applyToGuildGUI.ApplicationFormGUI;
-import gui.applyToGuildGUI.ChooseGuildGUI;
+import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
@@ -15,13 +15,13 @@ import java.awt.*;
 
 public class ApplyToGuildController {
 
-    public void chooseGuild(ChooseGuildGUI chooseGuildGUI, MainGUI mainGUI, Guild choosedGuild) {
+    public void chooseGuild(ChooseGuildToApplyGUI chooseGuildGUI, MainGUI mainGUI, Guild choosedGuild) {
         mainGUI.setEnabled(true);
         EventQueue.invokeLater(() -> new ApplicationFormGUI(mainGUI, choosedGuild));
         chooseGuildGUI.dispose();
     }
 
-    public void closeChooseGuildGUI(ChooseGuildGUI chooseGuildGUI, MainGUI mainGUI) {
+    public void closeChooseGuildGUI(ChooseGuildToApplyGUI chooseGuildGUI, MainGUI mainGUI) {
         mainGUI.setEnabled(true);
         chooseGuildGUI.dispose();
     }

@@ -12,7 +12,6 @@ public class Main {
     public static void main(String[] args) {
 
         ExtentManager.load();
-
         //initDefaultData();
 
         setLookAndFeel();

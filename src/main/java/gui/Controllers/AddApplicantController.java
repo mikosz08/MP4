@@ -9,7 +9,6 @@ import models.player.Player;
 import serialization.ExtentManager;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -37,6 +36,8 @@ public class AddApplicantController {
         for (ApplicationForm ap : playerForms) {
             ap.delete();
         }
+
+        ExtentManager.save();
 
         mainGUI.setEnabled(true);
         addAplicantGUI.dispose();

@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ChooseGuildGUI extends JDialog {
+public class ChooseGuildToApplyGUI extends JDialog {
     private JPanel contentPane;
     private JButton chooseButton;
     private JButton cancelButton;
@@ -18,7 +18,7 @@ public class ChooseGuildGUI extends JDialog {
     MainController mainController;
     ApplyToGuildController applyToGuildController;
 
-    public ChooseGuildGUI(MainGUI mainGUI) {
+    public ChooseGuildToApplyGUI(MainGUI mainGUI) {
         mainController = new MainController();
         applyToGuildController = new ApplyToGuildController();
 
