@@ -3,6 +3,7 @@ package gui.applyToGuildGUI;
 import gui.Controllers.ApplyToGuildController;
 import gui.MainGUI;
 import models.guild.Guild;
+import serialization.ExtentManager;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -20,6 +21,7 @@ public class ApplicationFormGUI extends JDialog {
 
     public ApplicationFormGUI(MainGUI mainGUI, Guild choosedGuild) {
         applyToGuildController = new ApplyToGuildController();
+
         mainGUI.setEnabled(false);
 
         choosedGuildInfoJLabel.setText("You want to apply to:" + choosedGuild.getGuildName() + '?');
@@ -32,13 +34,13 @@ public class ApplicationFormGUI extends JDialog {
     private void initButtons(MainGUI mainGUI, Guild choosedGuild) {
 
         sendButton.addActionListener(e -> {
-            mainGUI.setEnabled(true);
-            applyToGuildController.sendApplication(this, choosedGuild, referalMessageJArea.getText());
+
+            applyToGuildController.sendApplication(this, mainGUI, choosedGuild, referalMessageJArea.getText());
         });
 
         cancelButton.addActionListener(e -> {
             mainGUI.setEnabled(true);
-            applyToGuildController.closeApplicationFormGUI(this);
+            applyToGuildController.closeApplicationFormGUI(this, mainGUI);
         });
 
         addMessageRadioButton.addActionListener(e -> {

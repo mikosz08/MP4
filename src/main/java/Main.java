@@ -12,7 +12,9 @@ public class Main {
     public static void main(String[] args) {
 
         ExtentManager.load();
-        //initDefaultData();
+
+        //
+
 
         setLookAndFeel();
 
@@ -27,12 +29,4 @@ public class Main {
             e.printStackTrace();
         }
     }
-
-    private static void initDefaultData() {
-
-        DefaultDataManager.CreateDefaultData();
-
-    }
-
-
 }

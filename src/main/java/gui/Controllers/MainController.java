@@ -1,9 +1,7 @@
 package gui.Controllers;
 
-import gui.CreateGuildGUI;
-import gui.Login;
-import gui.MainGUI;
-import gui.RemoveApplication.ChooseGuildApplicationsGUI;
+import gui.*;
+import gui.removeApplication.ChooseGuildApplicationsGUI;
 import gui.addAplicantGUI.AddAplicantGUI;
 import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
 import models.functionalities.ApplicationForm;
@@ -16,13 +14,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainController {
 
-    DefaultTableModel tableModel;
+    private DefaultTableModel tableModel;
+
+    private static JTextArea logArea;
 
     public MainController() {
-
     }
 
     /**
@@ -56,7 +57,8 @@ public class MainController {
             return;
         }
 
-        Player[] players = Login.getLoggedUser().getGuild().getGuildMembers().toArray(new Player[0]);
+        List<Player> players = new ArrayList<>(Login.getLoggedUser().getGuild().getGuildMembers());
+
         String[] columnNames = {"Nickname", "Level", "Day Message", "Awarded Rep", "Rank"};
         changeModel(columnNames);
 
@@ -71,6 +73,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Load known guild Applicants.
+     */
     public void loadApplications(JTable table, Guild choosedGuild) {
 
         String[] columnNames = {"Your Applications", "Message"};
@@ -83,9 +88,7 @@ public class MainController {
                     "Send at: " + ap.getMessagePostDate(),
                     ap.getMessageContent()
             });
-
         }
-
     }
 
     /**
@@ -135,20 +138,74 @@ public class MainController {
             return;
         }
 
+        if (JOptionPane.showConfirmDialog(null, "Delete Guild?", "Warning",
+                JOptionPane.YES_NO_OPTION) != 0) {
+            return;
+        }
+
         Player owner = Login.getLoggedUser();
         Guild guild = owner.getGuild();
 
         guild.deleteGuild();
 
+        ExtentManager.save();
+
         loadGuilds(mainTable);
         showGuildInfo(guildInfoTextArea);
+    }
+
+    /**
+     * Leave current Guild
+     *
+     * @param mainTable         - main frame window
+     * @param guildInfoTextArea - area to display info messages
+     */
+    public void leaveGuild(JTable mainTable, JTextArea guildInfoTextArea) {
+
+        Player player = Login.getLoggedUser();
+        Guild playerGuild = player.getGuild();
+        Player nextFounder = null;
+
+        if (JOptionPane.showConfirmDialog(null, "Leave Guild?", "Warning",
+                JOptionPane.YES_NO_OPTION) != 0) {
+            return;
+        }
+
+
+        if (player.getPlayerType() == PlayerType.GUILD_FOUNDER) {
+            player.abandonGuild();
+            //next officer becomes founder
+            boolean nextFounderFound = false;
+            for (Player member : playerGuild.getGuildMembers()) {
+                if (member.getPlayerType() == PlayerType.GUILD_OFFICER) {
+                    nextFounder = member;
+                    nextFounderFound = true;
+                }
+            }
+
+            //if there is no officers, next member becomes founder
+            if (!nextFounderFound) {
+                nextFounder = playerGuild.getGuildMembers().iterator().next();
+            }
+            System.out.println("Nowy Founder: " + nextFounder.getNickname());
+
+
+            nextFounder.becomeGuildFounder();
+            playerGuild.setFounderNickname(nextFounder.getNickname());
+        } else {
+            player.abandonGuild();
+        }
+
         ExtentManager.save();
+
+        loadGuilds(mainTable);
+        showGuildInfo(guildInfoTextArea);
     }
 
     /**
      * Apply To Guild
      *
-     * @param mainGUI
+     * @param mainGUI - main frame window
      */
     public void showChooseGuildDialog(MainGUI mainGUI) {
         if (Login.getLoggedUser().getPlayerType() != PlayerType.APPLICANT) {
@@ -163,13 +220,13 @@ public class MainController {
     /**
      * Load dialog with Guild applicants.
      */
-    public void showAddApplicantDialog(MainGUI mainGUI) {
+    public void showAddApplicantDialog(MainGUI mainGUI, JTable mainTable) {
         if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT || Login.getLoggedUser().getPlayerType() == PlayerType.GUILD_MEMBER) {
             JOptionPane.showMessageDialog(null, "You need permission to do that!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        EventQueue.invokeLater(() -> new AddAplicantGUI(mainGUI));
+        EventQueue.invokeLater(() -> new AddAplicantGUI(mainGUI, mainTable));
         mainGUI.setEnabled(false);
     }
 
@@ -192,7 +249,7 @@ public class MainController {
     /**
      * Load Dialog to select the guild from which you want to remove the application.
      *
-     * @param mainGUI
+     * @param mainGUI - main frame window
      */
     public void showRemoveApplicationDialog(MainGUI mainGUI) {
 
@@ -204,6 +261,40 @@ public class MainController {
 
         mainGUI.setEnabled(false);
         EventQueue.invokeLater(() -> new ChooseGuildApplicationsGUI(mainGUI));
+    }
+
+    public void editDaySentence(MainGUI mainGUI) {
+
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
+            JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        mainGUI.setEnabled(false);
+        EventQueue.invokeLater(() -> new EditDaySentenceGUI(mainGUI));
+
+    }
+
+    public void showKickMemberDialog(MainGUI mainGUI, JTable mainTable) {
+
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
+            JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        mainGUI.setEnabled(false);
+        EventQueue.invokeLater(() -> new KickMemberGUI(mainGUI, mainTable));
+
+    }
+
+    public void printLog(String message) {
+        logArea.append(message + "\n");
+    }
+
+    public void setLogArea(JTextArea mainLogArea) {
+        logArea = mainLogArea;
     }
 
     public void showGuildInfo(Guild info, JTextArea guildInfoTextArea) {
@@ -228,4 +319,6 @@ public class MainController {
                         "Created At: ---\n")
         );
     }
+
+
 }

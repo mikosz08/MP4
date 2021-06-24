@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static models.functionalities.shop.Shop.mainShop;
 
 public class Player implements Serializable {
@@ -165,9 +166,6 @@ public class Player implements Serializable {
         if (playerType != PlayerType.GUILD_FOUNDER) {
             throw new DataValidationException("Only guild founder can set the sentence!");
         }
-        if (sentenceOfTheDay == null || sentenceOfTheDay.trim().isBlank()) {
-            throw new DataValidationException("Sentence cannot be empty!");
-        }
         this.sentenceOfTheDay = sentenceOfTheDay;
     }
 
@@ -269,7 +267,7 @@ public class Player implements Serializable {
         return playersExtent
                 .stream()
                 .sorted(Comparator.comparing(Player::getLevel).reversed())
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public static List<Player> getRankingByRepPoints() {
@@ -279,7 +277,7 @@ public class Player implements Serializable {
         return playersExtent
                 .stream()
                 .sorted(Comparator.comparing(Player::getReputationAwarded).reversed())
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     //testing
@@ -467,8 +465,8 @@ public class Player implements Serializable {
 
     public void abandonGuild() {
 
-        //every player should now be an applicant
-        setPlayerType(PlayerType.APPLICANT);
+        //delete guild
+        getGuild().removeGuildMember(this);
 
         //delete participated event
         if (participatedEvent != null) {
@@ -476,33 +474,23 @@ public class Player implements Serializable {
         }
 
         //delete created events
-        for (EventImpl event : getPlayerCreatedEvents()) {
-            removeEvent(event);
+        if (this.getPlayerType() == PlayerType.GUILD_OFFICER || this.getPlayerType() == PlayerType.GUILD_FOUNDER) {
+            for (EventImpl event : getPlayerCreatedEvents()) {
+                event.deleteCreatedEvent();
+            }
         }
 
-        //delete guild
-        setGuild(null);
+        //every player should now be an applicant
+        setPlayerType(PlayerType.APPLICANT);
 
     }
 
-    /**
-     * Utilities
-     */
     /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Player)) return false;
         Player player = (Player) o;
-        return level == player.level
-                && Float.compare(player.reputationEarned, reputationEarned) == 0
-                && Float.compare(player.reputationAwarded, reputationAwarded) == 0
-                && nickname.equals(player.nickname)
-                && playerClasses.equals(player.playerClasses)
-                && Objects.equals(messageOfTheDay, player.messageOfTheDay)
-                && Objects.equals(sentenceOfTheDay, player.sentenceOfTheDay)
-                && playerLocation.equals(player.playerLocation)
-                && dateOfAccession.equals(player.dateOfAccession)
-                && playerType == player.playerType;
+        return getId() == player.getId() && getLevel() == player.getLevel() && Float.compare(player.getReputationEarned(), getReputationEarned()) == 0 && Float.compare(player.getReputationAwarded(), getReputationAwarded()) == 0 && Objects.equals(getNickname(), player.getNickname()) && Objects.equals(getPlayerClasses(), player.getPlayerClasses()) && Objects.equals(getMessageOfTheDay(), player.getMessageOfTheDay()) && Objects.equals(getSentenceOfTheDay(), player.getSentenceOfTheDay()) && Objects.equals(getPlayerLocation(), player.getPlayerLocation()) && Objects.equals(getDateOfAccession(), player.getDateOfAccession()) && getPlayerType() == player.getPlayerType() && Objects.equals(memberGuild, player.memberGuild) && Objects.equals(getParticipatedEvent(), player.getParticipatedEvent()) && Objects.equals(getShop(), player.getShop()) && Objects.equals(getPlayerCreatedEvents(), player.getPlayerCreatedEvents()) && Objects.equals(getApplicationForms(), player.getApplicationForms()) && Objects.equals(getEquipment(), player.getEquipment());
     }*/
 
     @Override
@@ -514,7 +502,7 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Nick: %s, Lv: %d, Location: %s, Awarded Rep: %.2f",
-                getNickname(), getLevel(), getPlayerLocation(), getReputationAwarded());
+        return String.format("Nick: %s, Lv: %d, Location: %s, Awarded Rep: %.2f plus type: %s",
+                getNickname(), getLevel(), getPlayerLocation(), getReputationAwarded(), getPlayerType());
     }
 }

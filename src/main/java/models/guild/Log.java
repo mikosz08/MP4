@@ -22,7 +22,10 @@ public class Log implements Serializable {
         this.time = LocalDate.now();
         setOwner(owner);
 
-        logsExtent.add(this);
+        List<Log> copiedExtent = new ArrayList<>(logsExtent);
+        copiedExtent.add(this);
+        setLogExtent(copiedExtent);
+
     }
 
     public String getMessage() {

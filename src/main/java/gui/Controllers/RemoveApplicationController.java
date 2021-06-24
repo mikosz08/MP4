@@ -1,13 +1,10 @@
 package gui.Controllers;
 
-import gui.Login;
 import gui.MainGUI;
-import gui.RemoveApplication.ChooseApplicationToDeleteGUI;
-import gui.RemoveApplication.ChooseGuildApplicationsGUI;
+import gui.removeApplication.ChooseApplicationToDeleteGUI;
+import gui.removeApplication.ChooseGuildApplicationsGUI;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
-import models.player.Player;
-import models.player.PlayerType;
 import serialization.ExtentManager;
 
 import javax.swing.*;

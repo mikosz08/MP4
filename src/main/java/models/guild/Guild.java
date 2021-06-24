@@ -1,6 +1,5 @@
 package models.guild;
 
-import gui.Login;
 import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.functionalities.events.EventImpl;
@@ -43,6 +42,7 @@ public class Guild implements Serializable {
     private Set<Boost> guildBoosts = new HashSet<>();
 
     private final static int STARTING_REP_POINTS = 0;
+    private final static int MAX_GUILD_MEMBERS = 99;
 
     /**
      * Guild Constructor
@@ -53,7 +53,7 @@ public class Guild implements Serializable {
         }
         setGuildName(guildName);
         this.dateOfCreation = LocalDate.now();
-        setReputationPoints(STARTING_REP_POINTS);
+        setReputationPoints(MAX_GUILD_MEMBERS);
         setFounderNickname(guildFounder.getNickname());
         setFaction(faction);
         addGuildMember(guildFounder);
@@ -151,18 +151,20 @@ public class Guild implements Serializable {
             newMember.becomeGuildMember();
         }
 
+        if(getGuildMembers().size() >= MAX_GUILD_MEMBERS){
+            throw new DataValidationException("Guild is full!");
+        }
+
         this.guildMembers.add(newMember);
         newMember.setGuild(this);
     }
 
     public void removeGuildMember(Player guildMember) {
+
         if (!this.guildMembers.contains(guildMember)) {
             return;
         }
-        //to sprawdzenie będzie w guziku do usuwania memberów
-        /*if (this.guildMembers.size() == 1) {
-            throw new DataValidationException("Cannot remove last guild member!");
-        }*/
+
         this.guildMembers.remove(guildMember);
         guildMember.setGuild(null);
 
@@ -181,11 +183,31 @@ public class Guild implements Serializable {
     }
 
     public void setFaction(Faction faction) {
-        if (faction == null) {
+        /*if (faction == null) {
             throw new DataValidationException("Faction is required!");
         }
         this.guildFaction = faction;
-        faction.addGuild(this);
+        faction.addGuild(this);*/
+        //-------
+        if (this.guildFaction == faction) {
+            return;
+        }
+
+        if (this.guildFaction != null) {
+
+            Faction tmpFaction = this.guildFaction;
+            this.guildFaction = null;
+            tmpFaction.removeGuild(this);
+
+            if (faction != null) {
+                this.guildFaction = faction;
+                faction.addGuild(this);
+            }
+
+        } else {
+            this.guildFaction = faction;
+            faction.addGuild(this);
+        }
     }
 
     //tutaj mozna znullować ;/

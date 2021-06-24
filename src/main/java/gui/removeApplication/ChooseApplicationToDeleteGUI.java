@@ -1,4 +1,4 @@
-package gui.RemoveApplication;
+package gui.removeApplication;
 
 import gui.Controllers.MainController;
 import gui.Controllers.RemoveApplicationController;

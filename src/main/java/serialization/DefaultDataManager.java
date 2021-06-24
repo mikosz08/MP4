@@ -63,6 +63,7 @@ public abstract class DefaultDataManager {
         Guild guild6 = new Guild("ForSigmar", player6, faction1);
 
         guild1.addGuildMember(player7);
+        //player7.becomeGuildOfficer();
         guild1.addGuildMember(player8);
         guild3.addGuildMember(player9);
         guild6.addGuildMember(player10);
@@ -70,7 +71,7 @@ public abstract class DefaultDataManager {
         guild6.addGuildMember(player12);
 
         System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
-
+        ExtentManager.save();
     }
 
 }

@@ -30,7 +30,6 @@ public class ChooseGuildToApplyGUI extends JDialog {
     }
 
     private void initButtons(MainGUI mainGUI) {
-        //main guid zeby na koniec zrobic setEnable true!!!!!!!!!!!
         chooseButton.addActionListener(e -> {
             if (guildsTable.getSelectedRow() == -1) {
                 JOptionPane.showMessageDialog(null, "Choose a guild!", "Info",
@@ -40,7 +39,7 @@ public class ChooseGuildToApplyGUI extends JDialog {
 
             Guild choosedGuild = Guild.getGuildsExtent().get(guildsTable.getSelectedRow());
 
-            applyToGuildController.chooseGuild(this, mainGUI, choosedGuild);
+            applyToGuildController.showApplyToGuildDialog(this, mainGUI, choosedGuild);
         });
 
         cancelButton.addActionListener(e -> applyToGuildController.closeChooseGuildGUI(this, mainGUI));

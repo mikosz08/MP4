@@ -113,7 +113,7 @@ public class PlayerTest {
         System.out.println("EQ:" + Equipment.getEquipmentsExtent().size());
         System.out.println("SH:" + Shop.getShopsExtent().size());
         System.out.println("B:" + Boost.getBoostsExtent().size());
-        ExtentManager.save();
+        //ExtentManager.save();
 
         Player.clearExtension();
         Guild.clearExtension();

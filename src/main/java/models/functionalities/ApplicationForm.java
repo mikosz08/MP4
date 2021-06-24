@@ -17,7 +17,7 @@ public class ApplicationForm implements Serializable {
 
     private String messageContent;
     private LocalDate messagePostDate;
-    private boolean isAccepted;
+    //private boolean isAccepted;
 
     private Guild guild;
     private Player player;
@@ -74,17 +74,6 @@ public class ApplicationForm implements Serializable {
 
     public void setMessagePostDate(LocalDate messagePostDate) {
         this.messagePostDate = messagePostDate;
-    }
-
-    /**
-     * isAccepted
-     */
-    public boolean isAccepted() {
-        return isAccepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
     }
 
     /**

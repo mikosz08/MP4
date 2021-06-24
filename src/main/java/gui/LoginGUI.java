@@ -77,7 +77,7 @@ public class LoginGUI extends GuiUtilities {
                 }
                 Login.setLoggedUser(loggedPlayer);
 
-                System.out.printf("Logged as: %s\n", Login.getLoggedUser());
+                //System.out.printf("Logged as: %s\n", Login.getLoggedUser());
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(this, "Wrong Format!", "Try Again", JOptionPane.WARNING_MESSAGE);
                 validated = false;
@@ -86,7 +86,6 @@ public class LoginGUI extends GuiUtilities {
             if (validated) {
                 openMainGUI();
             }
-
         });
     }
 

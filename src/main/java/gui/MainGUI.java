@@ -2,6 +2,8 @@ package gui;
 
 import gui.Controllers.MainController;
 import models.guild.Guild;
+import models.player.PlayerType;
+import serialization.ExtentManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -55,12 +57,11 @@ public class MainGUI extends JFrame {
 
         mainController.loadGuilds(mainTable);
         mainController.showLoggedPlayerInfo(loggedAsTextField);
+        mainController.setLogArea(logTextArea);
 
-        Guild guild = Login.getLoggedUser().getGuild();
-        if (guild != null) {
-            mainController.showGuildInfo(guild, guildInfoTextArea);
-        }
+        showGuildInfo();
 
+        System.out.println(Login.getLoggedUser().getGuild());
 
     }
 
@@ -106,12 +107,36 @@ public class MainGUI extends JFrame {
 
         //Add Applicant Button
         addApplicantButton.addActionListener(e -> {
-            mainController.showAddApplicantDialog(this);
+            mainController.showAddApplicantDialog(this, mainTable);
         });
 
         //Remove Application Button
         removeApplicationButton.addActionListener(e -> mainController.showRemoveApplicationDialog(this));
 
+        //Edit Day Sentence Button
+        editDaySentenceButton.addActionListener(e -> mainController.editDaySentence(this));
+
+        //Kick Member Button
+        kickMemberButton.addActionListener(e -> mainController.showKickMemberDialog(this, mainTable));
+
+        //Leave Guild Button
+        leaveGuildButton.addActionListener(e -> {
+            if (Login.getLoggedUser().getGuild() == null) {
+                JOptionPane.showMessageDialog(null, "You don't have a guild!", "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else if (Login.getLoggedUser().getGuild().getGuildMembers().size() == 1) {
+                mainController.deleteGuild(mainTable, guildInfoTextArea);
+            } else {
+                mainController.leaveGuild(mainTable, guildInfoTextArea);
+            }
+        });
+    }
+
+    private void showGuildInfo() {
+        Guild guild = Login.getLoggedUser().getGuild();
+        if (guild != null) {
+            mainController.showGuildInfo(guild, guildInfoTextArea);
+        }
     }
 
 }

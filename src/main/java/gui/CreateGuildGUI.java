@@ -30,8 +30,6 @@ public class CreateGuildGUI extends JDialog {
         initFrame();
         initComponents();
         initButtons(mainGUI, guildInfoTextArea, mainTable);
-        contentPane.addComponentListener(new ComponentAdapter() {
-        });
     }
 
     private void initFrame() {
@@ -53,20 +51,11 @@ public class CreateGuildGUI extends JDialog {
                 Guild info = createGuildController.createGuild(guildNameTextField.getText(), (String) factionComboBox.getSelectedItem(), this);
                 mainController.showGuildInfo(info, guildInfoTextArea);
                 mainController.loadGuilds(mainTable);
-                //ExtentManager.save();
             }
         });
 
         cancelButton.addActionListener(e -> {
-            mainGUI.setEnabled(true);
-            createGuildController.onCancel(this);
-        });
-
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                mainGUI.setEnabled(true);
-            }
+            createGuildController.onCancel(this, mainGUI);
         });
 
         addWindowListener(new WindowAdapter() {

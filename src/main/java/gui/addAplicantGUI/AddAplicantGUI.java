@@ -19,20 +19,19 @@ public class AddAplicantGUI extends JDialog {
     MainController mainController;
     AddApplicantController addApplicantController;
 
-    public AddAplicantGUI(MainGUI mainGUI) {
+    public AddAplicantGUI(MainGUI mainGUI, JTable mainTable) {
         mainController = new MainController();
         addApplicantController = new AddApplicantController();
 
         initFrame();
-        initButtons(mainGUI);
+        initButtons(mainGUI, mainTable);
 
         mainController.loadApplicants(applicantsJTable);
-
     }
 
-    private void initButtons(MainGUI mainGUI) {
+    private void initButtons(MainGUI mainGUI, JTable mainTable) {
         acceptButton.addActionListener(e -> {
-            addApplicantController.acceptApplicant(this, mainGUI, applicantsJTable.getSelectedRow());
+            addApplicantController.acceptApplicant(this, mainGUI, applicantsJTable.getSelectedRow(), mainTable);
         });
 
         declineButton.addActionListener(e -> {
