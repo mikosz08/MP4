@@ -2,13 +2,7 @@ package gui;
 
 import gui.Controllers.MainController;
 import models.guild.Guild;
-import models.player.PlayerType;
-import serialization.ExtentManager;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 
 public class MainGUI extends JFrame {
 
@@ -26,7 +20,6 @@ public class MainGUI extends JFrame {
     private JTable mainTable;
 
     private JPanel menuPanel;
-
     private JPanel southMenuPanel;
     private JButton createGuildButton;
     private JButton applyToGuildButton;
@@ -60,9 +53,6 @@ public class MainGUI extends JFrame {
         mainController.setLogArea(logTextArea);
 
         showGuildInfo();
-
-        System.out.println(Login.getLoggedUser().getGuild());
-
     }
 
     /**
@@ -86,29 +76,19 @@ public class MainGUI extends JFrame {
         });
 
         //Show guild Members Button
-        membersButton.addActionListener(e -> {
-            mainController.loadMembers(mainTable);
-        });
+        membersButton.addActionListener(e -> mainController.loadMembers(mainTable));
 
         //Create Guild Button
-        createGuildButton.addActionListener(e -> {
-            mainController.showCreateGuildDialog(this, guildInfoTextArea, mainTable);
-        });
+        createGuildButton.addActionListener(e -> mainController.showCreateGuildDialog(this, guildInfoTextArea, mainTable));
 
         //Delete Guild Button
-        deleteGuildButton.addActionListener(e -> {
-            mainController.deleteGuild(mainTable, guildInfoTextArea);
-        });
+        deleteGuildButton.addActionListener(e -> mainController.deleteGuild(mainTable, guildInfoTextArea));
 
         //Apply To Guild Button
-        applyToGuildButton.addActionListener(e -> {
-            mainController.showChooseGuildDialog(this);
-        });
+        applyToGuildButton.addActionListener(e -> mainController.showChooseGuildDialog(this));
 
         //Add Applicant Button
-        addApplicantButton.addActionListener(e -> {
-            mainController.showAddApplicantDialog(this, mainTable);
-        });
+        addApplicantButton.addActionListener(e -> mainController.showAddApplicantDialog(this, mainTable));
 
         //Remove Application Button
         removeApplicationButton.addActionListener(e -> mainController.showRemoveApplicationDialog(this));
@@ -119,17 +99,14 @@ public class MainGUI extends JFrame {
         //Kick Member Button
         kickMemberButton.addActionListener(e -> mainController.showKickMemberDialog(this, mainTable));
 
+        //View Ranking Button
+        viewRankingButton.addActionListener(e -> mainController.showRankingDialog(this));
+
+        //Edit Day Message Button
+        editDayMessageButton.addActionListener(e -> mainController.editDayMessage(this, mainTable));
+
         //Leave Guild Button
-        leaveGuildButton.addActionListener(e -> {
-            if (Login.getLoggedUser().getGuild() == null) {
-                JOptionPane.showMessageDialog(null, "You don't have a guild!", "Info",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else if (Login.getLoggedUser().getGuild().getGuildMembers().size() == 1) {
-                mainController.deleteGuild(mainTable, guildInfoTextArea);
-            } else {
-                mainController.leaveGuild(mainTable, guildInfoTextArea);
-            }
-        });
+        leaveGuildButton.addActionListener(e -> mainController.leaveGuild(mainTable, guildInfoTextArea));
     }
 
     private void showGuildInfo() {

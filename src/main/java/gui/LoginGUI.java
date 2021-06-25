@@ -1,35 +1,25 @@
 package gui;
 
 import models.player.Player;
-import models.player.PlayerLocation;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collector;
 
-public class LoginGUI extends GuiUtilities {
+public class LoginGUI extends JFrame {
+
     private JPanel mainLoginPanel;
-    private JPanel northPanel;
-    private JPanel southPanel;
-
-    private JTextField classTextField;
     private JTextField usernameTextField;
-    private JTextField locationNameTextField;
-    private JTextField xTextField;
-    private JTextField yTextField;
-    private JTextField levelTextField;
-
-
+    private JPanel southPanel;
+    private JPanel northPanel;
     private JButton Default;
     private JButton Submit;
 
     public LoginGUI() {
         initFrame();
         initFields();
-        initButtons(this);
+        initButtons();
     }
 
     private void initFrame() {
@@ -52,8 +42,7 @@ public class LoginGUI extends GuiUtilities {
         });
     }
 
-    private void initButtons(LoginGUI loginGUI) {
-
+    private void initButtons() {
         Default.addActionListener(e -> {
             Random r = new Random();
             int userIndex = r.nextInt(Player.getPlayersExtent().size());
@@ -61,9 +50,7 @@ public class LoginGUI extends GuiUtilities {
         });
 
         Submit.addActionListener(e -> {
-
             boolean validated = true;
-
             try {
 
                 Player loggedPlayer = Player.getPlayersExtent()
@@ -77,7 +64,6 @@ public class LoginGUI extends GuiUtilities {
                 }
                 Login.setLoggedUser(loggedPlayer);
 
-                //System.out.printf("Logged as: %s\n", Login.getLoggedUser());
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(this, "Wrong Format!", "Try Again", JOptionPane.WARNING_MESSAGE);
                 validated = false;

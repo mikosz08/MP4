@@ -22,8 +22,8 @@ public class ChooseGuildApplicationsGUI extends JDialog {
 
         initFrame();
         initButtons(mainGUI);
-        mainController.loadGuilds(guildTable);
 
+        mainController.loadGuilds(guildTable);
     }
 
     private void initFrame() {
@@ -42,7 +42,7 @@ public class ChooseGuildApplicationsGUI extends JDialog {
         });
 
         cancelButton.addActionListener(e -> {
-            removeApplicationController.closeChooseGuildGUI(this, mainGUI);
+            removeApplicationController.closeChooseGuildDialog(this, mainGUI);
         });
 
         addWindowListener(new WindowAdapter() {
@@ -51,7 +51,6 @@ public class ChooseGuildApplicationsGUI extends JDialog {
                 dispose();
             }
         });
-
     }
 
 }

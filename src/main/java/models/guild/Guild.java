@@ -48,7 +48,7 @@ public class Guild implements Serializable {
      * Guild Constructor
      */
     public Guild(String guildName, Player guildFounder, Faction faction) {
-        if (guildFounder.getPlayerType() != PlayerType.GUILD_FOUNDER) {
+        if (guildFounder.getPlayerType() != PlayerType.FOUNDER) {
             throw new DataValidationException("wrong player type!");
         }
         setGuildName(guildName);
@@ -143,11 +143,12 @@ public class Guild implements Serializable {
         if (newMember == null) {
             throw new DataValidationException("Member is set to null!");
         }
+
         if (this.guildMembers.contains(newMember)) {
             return;
         }
 
-        if(newMember.getPlayerType() != PlayerType.GUILD_FOUNDER){
+        if(newMember.getPlayerType() != PlayerType.FOUNDER){
             newMember.becomeGuildMember();
         }
 

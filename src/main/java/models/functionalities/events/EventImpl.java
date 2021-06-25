@@ -219,7 +219,7 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
         }
 
         PlayerType creatorType = creator.getPlayerType();
-        if (creatorType != PlayerType.GUILD_OFFICER && creatorType != PlayerType.GUILD_FOUNDER) {
+        if (creatorType != PlayerType.OFFICER && creatorType != PlayerType.FOUNDER) {
             throw new DataValidationException(creatorType + " is not allowed to create an event!");
         }
 

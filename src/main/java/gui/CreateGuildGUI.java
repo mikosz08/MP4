@@ -7,7 +7,6 @@ import models.guild.Guild;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -15,8 +14,6 @@ public class CreateGuildGUI extends JDialog {
     private JPanel contentPane;
     private JButton createButton;
     private JButton cancelButton;
-    private JTextField guildNameInfoTextField;
-    private JTextField factionInfoTextField;
     private JTextField guildNameTextField;
     private JComboBox<String> factionComboBox;
 
@@ -43,12 +40,13 @@ public class CreateGuildGUI extends JDialog {
     }
 
     private void initButtons(MainGUI mainGUI, JTextArea guildInfoTextArea, JTable mainTable) {
+
         createButton.addActionListener(e -> {
             if (guildNameTextField.getText() == null || guildNameTextField.getText().trim().isBlank()) {
                 guildNameTextField.setBackground(Color.RED);
             } else {
-                mainGUI.setEnabled(true);
-                Guild info = createGuildController.createGuild(guildNameTextField.getText(), (String) factionComboBox.getSelectedItem(), this);
+
+                Guild info = createGuildController.createGuild(guildNameTextField.getText(), (String) factionComboBox.getSelectedItem(), this, mainGUI, mainTable, guildInfoTextArea);
                 mainController.showGuildInfo(info, guildInfoTextArea);
                 mainController.loadGuilds(mainTable);
             }

@@ -28,25 +28,32 @@ public abstract class DefaultDataManager {
         Player player11 = new Player("Jenean", 22, new PlayerLocation("Kharanos", -55, -551), "Demon Hunter");
         Player player12 = new Player("Pedro", 93, new PlayerLocation("Lakeshire", 8, 6), "Death Knight");
 
-        System.out.printf("created players: \n%s \n%s \n%s\n%n", player1, player2, player3);
+        Player player13 = new Player("FastFizzle", 75, new PlayerLocation("Dragon Isles", 55, -76), "Archer");
+        Player player14 = new Player("Billownozzle", 43, new PlayerLocation("GM Island", 57, 84), "Monk");
+        Player player15 = new Player("Wobblecub", 33, new PlayerLocation("Fendris Isle", -74, 67), "Warlock");
+        Player player16 = new Player("Pumplight", 43, new PlayerLocation("Kul Tiras", 54, 62), "Warlock");
+        Player player17 = new Player("Rustpatch", 27, new PlayerLocation("Janeiro's Point", -56, -551), "Knight");
+        Player player18 = new Player("Castcoil", 53, new PlayerLocation("Echo Isles", 35, 65), "Mage");
+
+        //System.out.printf("created players: \n%s \n%s \n%s\n%n", player1, player2, player3);
 
         Region region1 = new Region("Jinno");
         Region region2 = new Region("Easter Kingdoms");
         Region region3 = new Region("DunMorogg");
 
-        System.out.printf("created regions: \n%s \n%s \n%s\n%n", region1, region2, region3);
+        //System.out.printf("created regions: \n%s \n%s \n%s\n%n", region1, region2, region3);
 
         Leader leader1 = new Leader("Thanatos");
         Leader leader2 = new Leader("Azmodan");
         Leader leader3 = new Leader("Gucio");
 
-        System.out.printf("created leaders: \n%s \n%s \n%s\n%n", leader1, leader2, leader3);
+        //System.out.printf("created leaders: \n%s \n%s \n%s\n%n", leader1, leader2, leader3);
 
-        Faction faction1 = new Faction("Inquisition", leader1, region1);
-        Faction faction2 = new Faction("ITNGuardians", leader2, region2);
+        Faction faction1 = new Faction("DawnOfJava", leader1, region1);
+        Faction faction2 = new Faction("Stroustrups", leader2, region2);
         Faction faction3 = new Faction("UsualPlayers", leader3, region3);
 
-        System.out.printf("created factions: \n%s \n%s \n%s\n%n", faction1, faction2, faction3);
+        //System.out.printf("created factions: \n%s \n%s \n%s\n%n", faction1, faction2, faction3);
 
         player1.becomeGuildFounder();
         player2.becomeGuildFounder();
@@ -63,14 +70,39 @@ public abstract class DefaultDataManager {
         Guild guild6 = new Guild("ForSigmar", player6, faction1);
 
         guild1.addGuildMember(player7);
-        //player7.becomeGuildOfficer();
+            player7.becomeGuildOfficer();
         guild1.addGuildMember(player8);
+
+        guild2.addGuildMember(player13);
+
         guild3.addGuildMember(player9);
+
+        guild6.addGuildMember(player14);
+            player14.becomeGuildOfficer();
+        guild6.addGuildMember(player15);
+        guild6.addGuildMember(player16);
+        guild6.addGuildMember(player16);
+        guild6.addGuildMember(player18);
         guild6.addGuildMember(player10);
         guild6.addGuildMember(player11);
         guild6.addGuildMember(player12);
 
-        System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
+        for(Player p : Player.getPlayersExtent()){
+            p.setReputationAwarded((float) (Math.random() * 1234.0f));
+        }
+        player1.setMessageOfTheDay("que?");
+        player2.setMessageOfTheDay("ktoś coś dungeon dziś?");
+        player3.setMessageOfTheDay("WTB 4x [Dark Cristal]");
+        player5.setMessageOfTheDay("i can't join you tomorrow, sorry ;/");
+        player7.setMessageOfTheDay("panda3");
+        player8.setMessageOfTheDay("public static void what");
+        player10.setMessageOfTheDay(":D");
+        player11.setMessageOfTheDay("WTS Fire Mieczyk +13 4/6 + mats");
+        player12.setMessageOfTheDay("Any1 for [Wild Hogger slain 0/1]??");
+        player18.setMessageOfTheDay("Hello guys!");
+
+        //System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
+        System.out.println("[Custom Data Has Been Created]");
         ExtentManager.save();
     }
 

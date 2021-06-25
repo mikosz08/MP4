@@ -2,7 +2,7 @@ package gui.Controllers;
 
 import gui.*;
 import gui.removeApplication.ChooseGuildApplicationsGUI;
-import gui.addAplicantGUI.AddAplicantGUI;
+import gui.addAplicantGUI.AddApplicantGUI;
 import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
@@ -38,7 +38,6 @@ public class MainController {
         mainTable.setModel(tableModel);
 
         for (Guild g : guilds) {
-            // TODO dodać CONST MAX PLAYERS
             tableModel.addRow(new String[]{g.getGuildName(), g.getFounderNickname(), g.getGuildMembers().size()
                     + "/99", String.valueOf(g.getDateOfCreation())});
 
@@ -67,7 +66,7 @@ public class MainController {
         for (Player p : players) {
 
             tableModel.addRow(new String[]{p.getNickname(), String.valueOf(p.getLevel()),
-                    p.getMessageOfTheDay().orElse("-"),
+                    p.getMessageOfTheDay().orElse(""),
                     String.valueOf(p.getReputationAwarded()), String.valueOf(p.getPlayerType())});
 
         }
@@ -132,7 +131,7 @@ public class MainController {
      */
     public void deleteGuild(JTable mainTable, JTextArea guildInfoTextArea) {
 
-        if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.FOUNDER) {
             JOptionPane.showMessageDialog(null, "You can't do this!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -162,6 +161,15 @@ public class MainController {
      */
     public void leaveGuild(JTable mainTable, JTextArea guildInfoTextArea) {
 
+        if (Login.getLoggedUser().getGuild() == null) {
+            JOptionPane.showMessageDialog(null, "You don't have a guild!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } else if (Login.getLoggedUser().getGuild().getGuildMembers().size() == 1) {
+            deleteGuild(mainTable, guildInfoTextArea);
+            return;
+        }
+
         Player player = Login.getLoggedUser();
         Guild playerGuild = player.getGuild();
         Player nextFounder = null;
@@ -172,12 +180,13 @@ public class MainController {
         }
 
 
-        if (player.getPlayerType() == PlayerType.GUILD_FOUNDER) {
+        if (player.getPlayerType() == PlayerType.FOUNDER) {
             player.abandonGuild();
+
             //next officer becomes founder
             boolean nextFounderFound = false;
             for (Player member : playerGuild.getGuildMembers()) {
-                if (member.getPlayerType() == PlayerType.GUILD_OFFICER) {
+                if (member.getPlayerType() == PlayerType.OFFICER) {
                     nextFounder = member;
                     nextFounderFound = true;
                 }
@@ -187,11 +196,10 @@ public class MainController {
             if (!nextFounderFound) {
                 nextFounder = playerGuild.getGuildMembers().iterator().next();
             }
-            System.out.println("Nowy Founder: " + nextFounder.getNickname());
-
 
             nextFounder.becomeGuildFounder();
             playerGuild.setFounderNickname(nextFounder.getNickname());
+
         } else {
             player.abandonGuild();
         }
@@ -221,12 +229,12 @@ public class MainController {
      * Load dialog with Guild applicants.
      */
     public void showAddApplicantDialog(MainGUI mainGUI, JTable mainTable) {
-        if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT || Login.getLoggedUser().getPlayerType() == PlayerType.GUILD_MEMBER) {
+        if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT || Login.getLoggedUser().getPlayerType() == PlayerType.MEMBER) {
             JOptionPane.showMessageDialog(null, "You need permission to do that!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        EventQueue.invokeLater(() -> new AddAplicantGUI(mainGUI, mainTable));
+        EventQueue.invokeLater(() -> new AddApplicantGUI(mainGUI, mainTable));
         mainGUI.setEnabled(false);
     }
 
@@ -263,9 +271,14 @@ public class MainController {
         EventQueue.invokeLater(() -> new ChooseGuildApplicationsGUI(mainGUI));
     }
 
+    /**
+     * Load Dialog to edit sentence of the day.
+     *
+     * @param mainGUI - main frame window
+     */
     public void editDaySentence(MainGUI mainGUI) {
 
-        if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.FOUNDER) {
             JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -276,9 +289,12 @@ public class MainController {
 
     }
 
+    /**
+     * Load Dialog to select guild member to kick.
+     */
     public void showKickMemberDialog(MainGUI mainGUI, JTable mainTable) {
 
-        if (Login.getLoggedUser().getPlayerType() != PlayerType.GUILD_FOUNDER) {
+        if (Login.getLoggedUser().getPlayerType() != PlayerType.FOUNDER) {
             JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
@@ -289,6 +305,41 @@ public class MainController {
 
     }
 
+    /**
+     * Load Dialog to edit message of the day.
+     *
+     * @param mainGUI - main frame window
+     */
+    public void editDayMessage(MainGUI mainGUI, JTable mainTable) {
+        if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT) {
+            JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        mainGUI.setEnabled(false);
+        EventQueue.invokeLater(() -> new EditDayMessageGUI(mainGUI, mainTable));
+    }
+
+    /**
+     * Load Dialog to show player's ranking.
+     */
+    public void showRankingDialog(MainGUI mainGUI) {
+
+        if (Login.getLoggedUser().getPlayerType() == PlayerType.APPLICANT) {
+            JOptionPane.showMessageDialog(null, "You don't have permissions to do that!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        mainGUI.setEnabled(false);
+        EventQueue.invokeLater(() -> new RankingGUI(mainGUI));
+
+    }
+
+    /**
+     * Print Log
+     */
     public void printLog(String message) {
         logArea.append(message + "\n");
     }

@@ -3,16 +3,16 @@ package gui.Controllers;
 import gui.EditDaySentenceGUI;
 import gui.Login;
 import gui.MainGUI;
-import models.exception.DataValidationException;
 import models.guild.Log;
 import serialization.ExtentManager;
 
-import javax.swing.*;
 
 public class EditSentenceController {
-
     MainController mainController = new MainController();
 
+    /**
+     * Change Day Sentence.
+     */
     public void changeSentence(EditDaySentenceGUI editSentenceGUI, MainGUI mainGUI, String text) {
 
         Login.getLoggedUser().setSentenceOfTheDay(text);
@@ -27,8 +27,10 @@ public class EditSentenceController {
         editSentenceGUI.dispose();
     }
 
+    /**
+     * Close Dialog.
+     */
     public void closeEditSentenceDialog(EditDaySentenceGUI editSentenceGUI, MainGUI mainGUI) {
-
         mainGUI.setEnabled(true);
         editSentenceGUI.dispose();
     }

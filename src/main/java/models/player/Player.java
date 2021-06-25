@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static models.functionalities.shop.Shop.mainShop;
@@ -67,15 +66,15 @@ public class Player implements Serializable {
      * Dynamic Inheritance
      */
     public void becomeGuildMember() {
-        setPlayerType(PlayerType.GUILD_MEMBER);
+        setPlayerType(PlayerType.MEMBER);
     }
 
     public void becomeGuildOfficer() {
-        setPlayerType(PlayerType.GUILD_OFFICER);
+        setPlayerType(PlayerType.OFFICER);
     }
 
     public void becomeGuildFounder() {
-        setPlayerType(PlayerType.GUILD_FOUNDER);
+        setPlayerType(PlayerType.FOUNDER);
     }
 
     public void becomeGuildApplicant() {
@@ -149,9 +148,6 @@ public class Player implements Serializable {
     }
 
     public void setMessageOfTheDay(String messageOfTheDay) {
-        if (messageOfTheDay == null || messageOfTheDay.trim().isBlank()) {
-            throw new DataValidationException("Message cannot be empty!");
-        }
         this.messageOfTheDay = messageOfTheDay;
     }
 
@@ -163,7 +159,7 @@ public class Player implements Serializable {
     }
 
     public void setSentenceOfTheDay(String sentenceOfTheDay) {
-        if (playerType != PlayerType.GUILD_FOUNDER) {
+        if (playerType != PlayerType.FOUNDER) {
             throw new DataValidationException("Only guild founder can set the sentence!");
         }
         this.sentenceOfTheDay = sentenceOfTheDay;
@@ -299,7 +295,6 @@ public class Player implements Serializable {
         }
 
         if (this.memberGuild != null) {
-
             Guild tmpGuild = this.memberGuild;
             this.memberGuild = null;
             tmpGuild.removeGuildMember(this);
@@ -468,41 +463,28 @@ public class Player implements Serializable {
         //delete guild
         getGuild().removeGuildMember(this);
 
+        //null message of the day
+        setMessageOfTheDay(null);
+
         //delete participated event
         if (participatedEvent != null) {
             participatedEvent.removeEventParticipant(this);
         }
 
         //delete created events
-        if (this.getPlayerType() == PlayerType.GUILD_OFFICER || this.getPlayerType() == PlayerType.GUILD_FOUNDER) {
+        if (this.getPlayerType() == PlayerType.OFFICER || this.getPlayerType() == PlayerType.FOUNDER) {
             for (EventImpl event : getPlayerCreatedEvents()) {
                 event.deleteCreatedEvent();
             }
         }
 
-        //every player should now be an applicant
+        // player should now be an applicant
         setPlayerType(PlayerType.APPLICANT);
-
-    }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Player)) return false;
-        Player player = (Player) o;
-        return getId() == player.getId() && getLevel() == player.getLevel() && Float.compare(player.getReputationEarned(), getReputationEarned()) == 0 && Float.compare(player.getReputationAwarded(), getReputationAwarded()) == 0 && Objects.equals(getNickname(), player.getNickname()) && Objects.equals(getPlayerClasses(), player.getPlayerClasses()) && Objects.equals(getMessageOfTheDay(), player.getMessageOfTheDay()) && Objects.equals(getSentenceOfTheDay(), player.getSentenceOfTheDay()) && Objects.equals(getPlayerLocation(), player.getPlayerLocation()) && Objects.equals(getDateOfAccession(), player.getDateOfAccession()) && getPlayerType() == player.getPlayerType() && Objects.equals(memberGuild, player.memberGuild) && Objects.equals(getParticipatedEvent(), player.getParticipatedEvent()) && Objects.equals(getShop(), player.getShop()) && Objects.equals(getPlayerCreatedEvents(), player.getPlayerCreatedEvents()) && Objects.equals(getApplicationForms(), player.getApplicationForms()) && Objects.equals(getEquipment(), player.getEquipment());
-    }*/
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nickname, level, playerClasses,
-                messageOfTheDay, sentenceOfTheDay, reputationEarned,
-                reputationAwarded, playerLocation, dateOfAccession, playerType);
     }
 
     @Override
     public String toString() {
-        return String.format("Nick: %s, Lv: %d, Location: %s, Awarded Rep: %.2f plus type: %s",
-                getNickname(), getLevel(), getPlayerLocation(), getReputationAwarded(), getPlayerType());
+        return String.format("Nick: %s, Lv: %d, Location: %s, Awarded Rep: %.2f",
+                getNickname(), getLevel(), getPlayerLocation(), getReputationAwarded());
     }
 }

@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class AddAplicantGUI extends JDialog {
+public class AddApplicantGUI extends JDialog {
     private JPanel contentPane;
     private JButton acceptButton;
     private JButton declineButton;
@@ -19,7 +19,7 @@ public class AddAplicantGUI extends JDialog {
     MainController mainController;
     AddApplicantController addApplicantController;
 
-    public AddAplicantGUI(MainGUI mainGUI, JTable mainTable) {
+    public AddApplicantGUI(MainGUI mainGUI, JTable mainTable) {
         mainController = new MainController();
         addApplicantController = new AddApplicantController();
 

@@ -26,7 +26,6 @@ public class ChooseGuildToApplyGUI extends JDialog {
         initButtons(mainGUI);
 
         mainController.loadGuilds(guildsTable);
-
     }
 
     private void initButtons(MainGUI mainGUI) {

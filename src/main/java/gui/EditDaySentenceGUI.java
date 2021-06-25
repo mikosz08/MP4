@@ -19,9 +19,7 @@ public class EditDaySentenceGUI extends JDialog {
         editSentenceController = new EditSentenceController();
 
         initFrame();
-
         initButtons(mainGUI);
-
     }
 
     private void initButtons(MainGUI mainGUI) {

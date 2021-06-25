@@ -20,12 +20,13 @@ public class ChooseApplicationToDeleteGUI extends JDialog {
     public ChooseApplicationToDeleteGUI(Guild selectedGuild, MainGUI mainGUI) {
         mainController = new MainController();
         removeApplicationController = new RemoveApplicationController();
+
         mainGUI.setEnabled(false);
+
         initFrame();
         initButtons(mainGUI, selectedGuild);
 
         mainController.loadApplications(playerApplicationsTable, selectedGuild);
-
     }
 
     private void initFrame() {
@@ -45,7 +46,7 @@ public class ChooseApplicationToDeleteGUI extends JDialog {
         });
 
         buttonCancel.addActionListener(e -> {
-            removeApplicationController.closeRemoveApplicationGUI(this, mainGUI);
+            removeApplicationController.closeRemoveApplicationDialog(this, mainGUI);
         });
 
         addWindowListener(new WindowAdapter() {

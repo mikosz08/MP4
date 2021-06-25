@@ -40,21 +40,19 @@ public class ApplyToGuildController {
      */
     public void sendApplication(ApplicationFormGUI applicationFormGUI, MainGUI mainGUI, Guild choosedGuild, String text) {
         Player player = Login.getLoggedUser();
-        try {
-            new ApplicationForm(text, choosedGuild, player);
-        } catch (DataValidationException ex) {
-            ex.printStackTrace();
-        }
+
+        new ApplicationForm(text, choosedGuild, player);
 
         mainController.printLog(String.valueOf(new Log("Application to: " + choosedGuild.getGuildName() +
                 " has been send!", choosedGuild)));
 
         ExtentManager.save();
+
         mainGUI.setEnabled(true);
         applicationFormGUI.dispose();
     }
 
-    public void closeApplicationFormGUI(ApplicationFormGUI applicationFormGUI, MainGUI mainGUI) {
+    public void closeApplicationFormDialog(ApplicationFormGUI applicationFormGUI, MainGUI mainGUI) {
         mainGUI.setEnabled(true);
         applicationFormGUI.dispose();
     }

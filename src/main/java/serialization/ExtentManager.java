@@ -67,7 +67,6 @@ public class ExtentManager {
         File myObj = new File(EXTENT_FILE_PATH);
         if (!myObj.exists()) {
             DefaultDataManager.CreateDefaultData();
-            System.out.println("nothing to load");
             return;
         }
         loadExtent();

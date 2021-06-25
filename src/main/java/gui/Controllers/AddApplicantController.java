@@ -2,7 +2,7 @@ package gui.Controllers;
 
 import gui.Login;
 import gui.MainGUI;
-import gui.addAplicantGUI.AddAplicantGUI;
+import gui.addAplicantGUI.AddApplicantGUI;
 import models.functionalities.ApplicationForm;
 
 import models.guild.Log;
@@ -22,7 +22,7 @@ public class AddApplicantController {
     /**
      * Add accepted applicant
      */
-    public void acceptApplicant(AddAplicantGUI addAplicantGUI, MainGUI mainGUI, int selectedRow, JTable mainTable) {
+    public void acceptApplicant(AddApplicantGUI addAplicantGUI, MainGUI mainGUI, int selectedRow, JTable mainTable) {
 
         if (selectedRow == -1) {
             return;
@@ -59,7 +59,7 @@ public class AddApplicantController {
     /**
      * Remove declined application and save
      */
-    public void declineApplicant(AddAplicantGUI addAplicantGUI, MainGUI mainGUI, int selectedRow) {
+    public void declineApplicant(AddApplicantGUI addAplicantGUI, MainGUI mainGUI, int selectedRow) {
 
         if (selectedRow == -1) {
             return;

@@ -23,7 +23,6 @@ public class KickMemberGUI extends JDialog {
         initButton(mainGUI, mainTable);
 
         mainController.loadMembers(membersTable);
-
     }
 
     private void initButton(MainGUI mainGUI, JTable mainTable) {
@@ -42,7 +41,6 @@ public class KickMemberGUI extends JDialog {
                 dispose();
             }
         });
-
     }
 
     private void initFrame() {

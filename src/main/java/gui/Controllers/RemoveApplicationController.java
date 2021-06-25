@@ -33,7 +33,7 @@ public class RemoveApplicationController {
         applicationChooseGuildGUI.dispose();
     }
 
-    public void closeChooseGuildGUI(ChooseGuildApplicationsGUI applicationChooseGuildGUI, MainGUI mainGUI) {
+    public void closeChooseGuildDialog(ChooseGuildApplicationsGUI applicationChooseGuildGUI, MainGUI mainGUI) {
         mainGUI.setEnabled(true);
         applicationChooseGuildGUI.dispose();
     }
@@ -59,7 +59,10 @@ public class RemoveApplicationController {
         chooseApplicationToDeleteGUI.dispose();
     }
 
-    public void closeRemoveApplicationGUI(ChooseApplicationToDeleteGUI chooseApplicationToDeleteGUI, MainGUI mainGUI) {
+    /**
+     * Close Dialog.
+     */
+    public void closeRemoveApplicationDialog(ChooseApplicationToDeleteGUI chooseApplicationToDeleteGUI, MainGUI mainGUI) {
         mainGUI.setEnabled(true);
         chooseApplicationToDeleteGUI.dispose();
     }

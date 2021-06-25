@@ -6,15 +6,15 @@ import gui.MainGUI;
 import models.player.Player;
 import serialization.ExtentManager;
 
-
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class KickMemberController {
-
     MainController mainController = new MainController();
 
+    /**
+     * Remove Player from Guild.
+     * */
     public void kickPlayer(KickMemberGUI kickMemberGUI, MainGUI mainGUI, int selectedRow, JTable mainTable) {
 
         if (selectedRow == -1) {
@@ -31,7 +31,7 @@ public class KickMemberController {
             return;
         }
 
-        Login.getLoggedUser().getGuild().removeGuildMember(playerToKick);
+        playerToKick.abandonGuild();
 
         ExtentManager.save();
 
@@ -40,8 +40,10 @@ public class KickMemberController {
         kickMemberGUI.dispose();
     }
 
+    /**
+     * Close Dialog.
+     */
     public void closeKickMemberDialog(KickMemberGUI kickMemberGUI, MainGUI mainGUI) {
-
         mainGUI.setEnabled(true);
         kickMemberGUI.dispose();
     }

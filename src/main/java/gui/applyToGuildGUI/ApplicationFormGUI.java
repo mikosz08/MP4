@@ -3,7 +3,6 @@ package gui.applyToGuildGUI;
 import gui.Controllers.ApplyToGuildController;
 import gui.MainGUI;
 import models.guild.Guild;
-import serialization.ExtentManager;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -28,7 +27,6 @@ public class ApplicationFormGUI extends JDialog {
 
         initFrame();
         initButtons(mainGUI, choosedGuild);
-
     }
 
     private void initButtons(MainGUI mainGUI, Guild choosedGuild) {
@@ -40,7 +38,7 @@ public class ApplicationFormGUI extends JDialog {
 
         cancelButton.addActionListener(e -> {
             mainGUI.setEnabled(true);
-            applyToGuildController.closeApplicationFormGUI(this, mainGUI);
+            applyToGuildController.closeApplicationFormDialog(this, mainGUI);
         });
 
         addMessageRadioButton.addActionListener(e -> {
