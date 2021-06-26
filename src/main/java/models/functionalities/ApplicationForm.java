@@ -151,9 +151,9 @@ public class ApplicationForm implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         applicationFormExtent.clear();
-    }
+    }*/
 
     @Override
     public String toString() {

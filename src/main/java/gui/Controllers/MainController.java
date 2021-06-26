@@ -6,6 +6,7 @@ import gui.addAplicantGUI.AddApplicantGUI;
 import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
+import models.guild.GuildAchievement;
 import models.player.Player;
 import models.player.PlayerType;
 import serialization.ExtentManager;
@@ -86,6 +87,30 @@ public class MainController {
             tableModel.addRow(new String[]{
                     "Send at: " + ap.getMessagePostDate(),
                     ap.getMessageContent()
+            });
+        }
+    }
+
+    /**
+     * Load guild Achievements.
+     */
+    public void loadAchievements(MainGUI mainGUI, JTable mainTable) {
+
+        if (Login.getLoggedUser().getGuild() == null) {
+            JOptionPane.showMessageDialog(null, "You don't have a Guild!", "Info",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String[] columnNames = {"Name", "Requirements"};
+        changeModel(columnNames);
+        mainTable.setModel(tableModel);
+
+        for (GuildAchievement ga : Login.getLoggedUser().getGuild().getGuildAchievements()) {
+
+            tableModel.addRow(new String[]{
+                    ga.getAchievementName(),
+                    ga.getRequirements()
             });
         }
     }
@@ -337,6 +362,8 @@ public class MainController {
 
     }
 
+
+
     /**
      * Print Log
      */
@@ -370,6 +397,7 @@ public class MainController {
                         "Created At: ---\n")
         );
     }
+
 
 
 }

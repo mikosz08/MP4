@@ -190,7 +190,7 @@ public class Player implements Serializable {
         if (reputationAwarded < 0) {
             throw new DataValidationException("Reputation awarded cannot be less than 0!");
         }
-        this.reputationAwarded += reputationAwarded;
+        this.reputationAwarded = reputationAwarded;
     }
 
     /**
@@ -277,9 +277,9 @@ public class Player implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         playersExtent.clear();
-    }
+    }*/
 
     /**
      * Guild Association
@@ -465,6 +465,9 @@ public class Player implements Serializable {
 
         //null message of the day
         setMessageOfTheDay(null);
+
+        //reset awarded reputation
+        setReputationAwarded(0);
 
         //delete participated event
         if (participatedEvent != null) {

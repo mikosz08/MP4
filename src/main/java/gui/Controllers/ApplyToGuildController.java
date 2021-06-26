@@ -4,14 +4,12 @@ import gui.Login;
 import gui.MainGUI;
 import gui.applyToGuildGUI.ApplicationFormGUI;
 import gui.applyToGuildGUI.ChooseGuildToApplyGUI;
-import models.exception.DataValidationException;
 import models.functionalities.ApplicationForm;
 import models.guild.Guild;
 import models.guild.Log;
 import models.player.Player;
 import serialization.ExtentManager;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class ApplyToGuildController {

@@ -92,8 +92,8 @@ public class Shop implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         shopsExtent.clear();
-    }
+    }*/
 
 }

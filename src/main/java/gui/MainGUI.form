@@ -42,18 +42,22 @@
               <component id="d4fe6" class="javax.swing.JButton" binding="eventsButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <enabled value="false"/>
                   <text value="Events"/>
                 </properties>
               </component>
               <component id="fde9c" class="javax.swing.JButton" binding="achievementsButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <background color="-12281995"/>
+                  <enabled value="true"/>
                   <text value="Achievements"/>
                 </properties>
               </component>
               <component id="1169e" class="javax.swing.JButton" binding="shopButton" default-binding="true">
                 <constraints/>
                 <properties>
+                  <enabled value="false"/>
                   <text value="Shop"/>
                 </properties>
               </component>
@@ -254,6 +258,7 @@
                     </constraints>
                     <properties>
                       <background color="-1073401"/>
+                      <enabled value="false"/>
                       <text value="Create Event"/>
                     </properties>
                   </component>

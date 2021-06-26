@@ -3,6 +3,8 @@ package gui;
 import gui.Controllers.MainController;
 import models.guild.Guild;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainGUI extends JFrame {
 
@@ -71,9 +73,7 @@ public class MainGUI extends JFrame {
     private void initButtons() {
 
         //Show Guilds Button
-        guildsButton.addActionListener(e -> {
-            mainController.loadGuilds(mainTable);
-        });
+        guildsButton.addActionListener(e -> mainController.loadGuilds(mainTable));
 
         //Show guild Members Button
         membersButton.addActionListener(e -> mainController.loadMembers(mainTable));
@@ -107,6 +107,9 @@ public class MainGUI extends JFrame {
 
         //Leave Guild Button
         leaveGuildButton.addActionListener(e -> mainController.leaveGuild(mainTable, guildInfoTextArea));
+
+        achievementsButton.addActionListener(e -> mainController.loadAchievements(this, mainTable));
+
     }
 
     private void showGuildInfo() {

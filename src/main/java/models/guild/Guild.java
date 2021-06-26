@@ -78,9 +78,9 @@ public class Guild implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         guildsExtent.clear();
-    }
+    }*/
 
     /**
      * Guild Name
@@ -184,12 +184,6 @@ public class Guild implements Serializable {
     }
 
     public void setFaction(Faction faction) {
-        /*if (faction == null) {
-            throw new DataValidationException("Faction is required!");
-        }
-        this.guildFaction = faction;
-        faction.addGuild(this);*/
-        //-------
         if (this.guildFaction == faction) {
             return;
         }
@@ -210,30 +204,6 @@ public class Guild implements Serializable {
             faction.addGuild(this);
         }
     }
-
-    //tutaj mozna znullować ;/
-    /*public void setFaction(Faction newFaction) {
-
-        if (this.guildFaction == newFaction) {
-            return;
-        }
-
-        if (this.guildFaction != null) {
-
-            Faction tmpFaction = this.guildFaction;
-            this.guildFaction = null;
-            tmpFaction.removeGuild(this);
-
-            if (newFaction != null) {
-                this.guildFaction = newFaction;
-                newFaction.addGuild(this);
-            }
-
-        } else {
-            this.guildFaction = newFaction;
-            newFaction.addGuild(this);
-        }
-    }*/
 
     /**
      * ApplicationForm Association

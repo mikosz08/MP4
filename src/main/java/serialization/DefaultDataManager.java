@@ -1,9 +1,6 @@
 package serialization;
 
-import models.guild.Faction;
-import models.guild.Guild;
-import models.guild.Leader;
-import models.guild.Region;
+import models.guild.*;
 import models.player.Player;
 import models.player.PlayerLocation;
 
@@ -49,9 +46,9 @@ public abstract class DefaultDataManager {
 
         //System.out.printf("created leaders: \n%s \n%s \n%s\n%n", leader1, leader2, leader3);
 
-        Faction faction1 = new Faction("DawnOfJava", leader1, region1);
-        Faction faction2 = new Faction("Stroustrups", leader2, region2);
-        Faction faction3 = new Faction("UsualPlayers", leader3, region3);
+        Faction faction1 = new Faction("Marauders", leader1, region1);
+        Faction faction2 = new Faction("Syndicate", leader2, region2);
+        Faction faction3 = new Faction("Alliance", leader3, region3);
 
         //System.out.printf("created factions: \n%s \n%s \n%s\n%n", faction1, faction2, faction3);
 
@@ -77,15 +74,16 @@ public abstract class DefaultDataManager {
 
         guild3.addGuildMember(player9);
 
+        guild6.addGuildMember(player10);
+        guild6.addGuildMember(player11);
+        guild6.addGuildMember(player12);
         guild6.addGuildMember(player14);
             player14.becomeGuildOfficer();
         guild6.addGuildMember(player15);
         guild6.addGuildMember(player16);
-        guild6.addGuildMember(player16);
+        guild6.addGuildMember(player17);
         guild6.addGuildMember(player18);
-        guild6.addGuildMember(player10);
-        guild6.addGuildMember(player11);
-        guild6.addGuildMember(player12);
+
 
         for(Player p : Player.getPlayersExtent()){
             p.setReputationAwarded((float) (Math.random() * 1234.0f));
@@ -100,6 +98,10 @@ public abstract class DefaultDataManager {
         player11.setMessageOfTheDay("WTS Fire Mieczyk +13 4/6 + mats");
         player12.setMessageOfTheDay("Any1 for [Wild Hogger slain 0/1]??");
         player18.setMessageOfTheDay("Hello guys!");
+
+        GuildAchievement achi1 = new GuildAchievement("Wealhty!", "Earn 5.000 Gold as a Guild Member", guild6);
+        GuildAchievement achi2 = new GuildAchievement("True Developer!", "Deafeat Tomashvodan!", guild6);
+        GuildAchievement achi3 = new GuildAchievement("Well Known!", "Your Guild have to earn 1.000 RP", guild6);
 
         //System.out.printf("created guilds: \n%s \n%s \n%s\n%n", guild1, guild2, guild3, guild4, guild5, guild6);
         System.out.println("[Custom Data Has Been Created]");

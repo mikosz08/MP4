@@ -93,9 +93,9 @@ public class Region implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         regionsExtent.clear();
-    }
+    }*/
 
     /**
      * Utilities

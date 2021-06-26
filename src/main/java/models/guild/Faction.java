@@ -127,9 +127,9 @@ public class Faction implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         factionsExtent.clear();
-    }
+    }*/
 
     /**
      * Guild Association

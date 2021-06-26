@@ -304,9 +304,9 @@ public class EventImpl implements ExpEvent, GoldEvent, SocialEvent, Serializable
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         eventExtent.clear();
-    }
+    }*/
 
     /**
      * Unique

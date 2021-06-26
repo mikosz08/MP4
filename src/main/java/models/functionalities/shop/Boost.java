@@ -21,10 +21,8 @@ public class Boost implements Serializable {
     private Shop shop;
     private Guild owner;
 
-    public Boost(String boostName,Guild owner, Shop shop, LocalDate durationTo, int reputationBonus, BoostType boostType) {
+    public Boost(String boostName, LocalDate durationTo, int reputationBonus, BoostType boostType) {
         setBoostName(boostName);
-        setShop(shop);
-        setOwner(owner);
         setDurationTo(durationTo);
         setReputationBonus(reputationBonus);
         setBoostType(boostType);
@@ -174,8 +172,8 @@ public class Boost implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         boostsExtent.clear();
-    }
+    }*/
 
 }

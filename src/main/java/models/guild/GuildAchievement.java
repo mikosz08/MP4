@@ -101,9 +101,9 @@ public class GuildAchievement implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         guildAchievementExtent.clear();
-    }
+    }*/
 
     @Override
     public String toString() {

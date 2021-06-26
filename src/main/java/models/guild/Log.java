@@ -81,9 +81,9 @@ public class Log implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         logsExtent.clear();
-    }
+    }*/
 
     /**
      * Utilities

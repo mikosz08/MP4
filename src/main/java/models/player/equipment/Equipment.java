@@ -107,9 +107,9 @@ public abstract class Equipment implements Serializable {
     }
 
     //testing
-    public static void clearExtension() {
+    /*public static void clearExtension() {
         equipmentExtent.clear();
-    }
+    }*/
 
     @Override
     public String toString() {
