@@ -2,7 +2,7 @@
 # MP4
 Projekt Końcowy MAS
 
-The extended version can be found in Documentation.pdf
+Do rozszerzonego opisu odsyłam do 'Documentation.pdf'
 
 Celem oprogramowania będzie udostępnienie graczom przejrzystego i intuicyjnego interfejsu umożliwiającego tworzenie,
 dołączanie i usuwanie Gildii dla graczy.
