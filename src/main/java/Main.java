@@ -10,16 +10,9 @@ import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
-
         ExtentManager.load();
-
-        //
-
-
         setLookAndFeel();
-
         EventQueue.invokeLater(LoginGUI::new);
-
     }
 
     private static void setLookAndFeel() {
