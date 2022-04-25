@@ -4,8 +4,7 @@ Projekt Końcowy MAS
 
 Do rozszerzonego opisu odsyłam do 'Documentation.pdf'
 
-Celem oprogramowania będzie udostępnienie graczom przejrzystego i intuicyjnego interfejsu umożliwiającego tworzenie,
-dołączanie i usuwanie Gildii dla graczy.
+Celem oprogramowania będzie udostępnienie graczom przejrzystego i intuicyjnego interfejsu umożliwiającego zarządzanie gildią w grze komputerowej.
 
 Wbudowany system wiadomości i sentencji dnia ułatwi graczom proklamację ważnych informacji tj.: uzgadnianie miejsca i czasu
 zbiórki do wspólnej zabawy podczas eventu, terminów rajdów lub turniejów PVP czy reklamę swoich przedmiotów na
